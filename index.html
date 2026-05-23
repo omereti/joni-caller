@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#111111">
+  <title>מחייג</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #111111;
+      --surface:  #1c1c1e;
+      --surface2: #2c2c2e;
+      --text:     #ffffff;
+      --text2:    #8e8e93;
+      --green:    #30d158;
+      --wa:       #25d366;
+      --blue:     #0a84ff;
+      --red:      #ff453a;
+      --border:   #38383a;
+      --r:        18px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg:      #f2f2f7;
+        --surface: #ffffff;
+        --surface2:#e5e5ea;
+        --text:    #000000;
+        --text2:   #6c6c70;
+        --border:  #c6c6c8;
+      }
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* ── Screens ───────────────────────────────────── */
+    .screen {
+      display: none;
+      position: fixed; inset: 0;
+      flex-direction: column;
+      background: var(--bg);
+      overflow-y: auto;
+    }
+    .screen.active { display: flex; }
+
+    /* ── Top bar ───────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 10px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .topbar-title { font-size: 17px; font-weight: 700; }
+    .topbar-count {
+      font-size: 13px;
+      color: var(--text2);
+      background: var(--surface2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .btn-icon {
+      background: none; border: none;
+      color: var(--text2); font-size: 22px;
+      cursor: pointer; padding: 6px; border-radius: 8px;
+      line-height: 1;
+    }
+
+    /* ── Progress ──────────────────────────────────── */
+    .prog-wrap {
+      height: 4px;
+      background: var(--surface2);
+      flex-shrink: 0;
+    }
+    .prog-bar {
+      height: 100%;
+      background: var(--green);
+      transition: width .4s ease;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ── Contact card ──────────────────────────────── */
+    .contact-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 28px 12px;
+      gap: 6px;
+      text-align: center;
+    }
+    .avatar {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px;
+      margin-bottom: 10px;
+      border: 3px solid var(--border);
+    }
+    .c-name {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .c-phone {
+      font-size: 24px;
+      color: var(--text2);
+      direction: ltr;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+    .c-group {
+      font-size: 13px;
+      color: var(--text2);
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    /* ── Action area ───────────────────────────────── */
+    .action-area {
+      padding: 0 22px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* big call button */
+    .btn-call {
+      width: 100%;
+      padding: 22px;
+      border: none; border-radius: var(--r);
+      font-size: 22px; font-weight: 800;
+      cursor: pointer;
+      transition: background .2s, opacity .2s, transform .1s;
+      letter-spacing: .3px;
+    }
+    .btn-call:active { transform: scale(.97); }
+    .btn-call.ready  { background: var(--green); color: #fff; }
+    .btn-call.called { background: var(--surface2); color: var(--text2); }
+
+    /* post-call buttons */
+    .post-btns {
+      display: flex; flex-direction: column; gap: 12px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .35s ease, opacity .3s ease;
+    }
+    .post-btns.show { max-height: 220px; opacity: 1; }
+
+    .btn-wa {
+      width: 100%;
+      padding: 19px;
+      border: none; border-radius: var(--r);
+      font-size: 18px; font-weight: 700;
+      cursor: pointer;
+      background: var(--wa); color: #fff;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: opacity .15s;
+    }
+    .btn-wa:active { opacity: .85; }
+
+    .btn-next {
+      width: 100%;
+      padding: 19px;
+      border: none; border-radius: var(--r);
+      font-size: 18px; font-weight: 700;
+      cursor: pointer;
+      background: var(--blue); color: #fff;
+      transition: opacity .15s;
+    }
+    .btn-next:active { opacity: .85; }
+
+    /* secondary row */
+    .sec-row {
+      display: flex; gap: 10px;
+      padding: 0 22px 28px;
+    }
+    .btn-sec {
+      flex: 1;
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: none; color: var(--text2);
+      font-size: 15px; font-weight: 500;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-sec:active { background: var(--surface2); }
+
+    /* ── Upload screen ─────────────────────────────── */
+    .upload-body {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 32px 28px; gap: 20px;
+      text-align: center;
+    }
+    .upload-icon { font-size: 72px; line-height: 1; }
+    .upload-title { font-size: 28px; font-weight: 800; }
+    .upload-sub { font-size: 16px; color: var(--text2); line-height: 1.55; }
+    .drop-zone {
+      width: 100%;
+      padding: 36px 20px;
+      border: 2px dashed var(--border);
+      border-radius: var(--r);
+      background: var(--surface);
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .drop-zone:hover, .drop-zone.drag { border-color: var(--green); background: var(--surface2); }
+    .drop-zone-text { font-size: 16px; font-weight: 600; }
+    .drop-zone-sub  { font-size: 14px; color: var(--text2); margin-top: 4px; }
+    .btn-upload {
+      width: 100%;
+      padding: 19px;
+      border: none; border-radius: var(--r);
+      font-size: 18px; font-weight: 700;
+      background: var(--green); color: #fff;
+      cursor: pointer;
+    }
+    .upload-err { color: var(--red); font-size: 14px; display: none; }
+
+    /* ── Settings screen ───────────────────────────── */
+    .settings-body {
+      flex: 1;
+      padding: 24px 22px;
+      display: flex; flex-direction: column;
+      gap: 22px;
+      overflow-y: auto;
+    }
+    .setting-label { font-size: 14px; color: var(--text2); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 17px; font-family: inherit;
+      resize: vertical; min-height: 110px;
+    }
+    .hint { font-size: 13px; color: var(--text2); margin-top: 6px; }
+    .btn-save {
+      padding: 17px;
+      border: none; border-radius: var(--r);
+      font-size: 17px; font-weight: 700;
+      background: var(--green); color: #fff;
+      cursor: pointer;
+    }
+    .btn-danger {
+      padding: 15px;
+      border: 1px solid var(--red);
+      border-radius: var(--r);
+      font-size: 15px; font-weight: 500;
+      background: none; color: var(--red);
+      cursor: pointer;
+      width: 100%;
+    }
+    .danger-area { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+
+    /* ── Done screen ───────────────────────────────── */
+    .done-body {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 32px 28px; gap: 14px; text-align: center;
+    }
+    .done-emoji { font-size: 80px; line-height: 1; }
+    .done-title { font-size: 30px; font-weight: 800; }
+    .done-sub   { font-size: 16px; color: var(--text2); }
+    .btn-restart {
+      margin-top: 24px;
+      padding: 18px 40px;
+      border: none; border-radius: var(--r);
+      font-size: 18px; font-weight: 700;
+      background: var(--green); color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ UPLOAD ══════════════════════════════════════════════════ -->
+<div id="s-upload" class="screen active">
+  <div class="upload-body">
+    <div class="upload-icon">📋</div>
+    <div class="upload-title">מחייג JONI</div>
+    <div class="upload-sub">העלה את קובץ האנשי קשר שלך (Excel).<br>הנתונים נשמרים רק במכשיר שלך — לא עוזבים אותו.</div>
+    <div id="drop-zone" class="drop-zone">
+      <div style="font-size:40px;margin-bottom:10px">📂</div>
+      <div class="drop-zone-text">גרור קובץ Excel לכאן</div>
+      <div class="drop-zone-sub">או לחץ לבחירת קובץ</div>
+      <input id="file-in" type="file" accept=".xlsx,.xls" style="display:none">
+    </div>
+    <div id="upload-err" class="upload-err"></div>
+  </div>
+</div>
+
+<!-- ══ CALLING ═════════════════════════════════════════════════ -->
+<div id="s-calling" class="screen">
+  <div class="prog-wrap"><div id="prog" class="prog-bar" style="width:0%"></div></div>
+  <div class="topbar">
+    <span id="count-badge" class="topbar-count">0 / 0</span>
+    <span class="topbar-title">מחייג JONI</span>
+    <button class="btn-icon" onclick="App.showSettings()" title="הגדרות">⚙️</button>
+  </div>
+
+  <div class="contact-card">
+    <div id="av" class="avatar">👤</div>
+    <div id="c-name"  class="c-name">—</div>
+    <div id="c-phone" class="c-phone">—</div>
+    <div id="c-group" class="c-group"></div>
+  </div>
+
+  <div class="action-area">
+    <button id="btn-call" class="btn-call ready" onclick="App.handleCall()">📞 חייג</button>
+    <div id="post-btns" class="post-btns">
+      <button class="btn-wa"  onclick="App.sendWA()"><span>💬</span> שלח WhatsApp</button>
+      <button class="btn-next" onclick="App.next()">הבא בתור &nbsp;➡️</button>
+    </div>
+  </div>
+
+  <div class="sec-row">
+    <button class="btn-sec" onclick="App.prev()">◀ חזור</button>
+    <button class="btn-sec" onclick="App.skip()">דלג ▶</button>
+  </div>
+</div>
+
+<!-- ══ SETTINGS ════════════════════════════════════════════════ -->
+<div id="s-settings" class="screen">
+  <div class="topbar">
+    <button class="btn-icon" onclick="App.showCalling()">✕</button>
+    <span class="topbar-title">הגדרות</span>
+    <span style="width:36px"></span>
+  </div>
+  <div class="settings-body">
+    <div>
+      <div class="setting-label">תבנית הודעת WhatsApp</div>
+      <textarea id="wa-tmpl" rows="4"></textarea>
+      <div class="hint">השתמש ב-<code>[שם]</code> לשם איש הקשר</div>
+    </div>
+    <button class="btn-save" onclick="App.saveSettings()">שמור</button>
+    <div class="danger-area">
+      <button class="btn-danger" onclick="App.resetQueue()">אפס מיקום בתור</button>
+      <button class="btn-danger" onclick="App.clearAll()">מחק את כל הנתונים</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DONE ════════════════════════════════════════════════════ -->
+<div id="s-done" class="screen">
+  <div class="done-body">
+    <div class="done-emoji">🎉</div>
+    <div class="done-title">סיימת!</div>
+    <div class="done-sub">התקשרת לכל אנשי הקשר</div>
+    <button class="btn-restart" onclick="App.resetQueue()">התחל מחדש</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+const App = (() => {
+  // ── Storage keys ──────────────────────────────────────────
+  const K = {
+    contacts:  'joni_contacts',
+    position:  'joni_pos',
+    completed: 'joni_done',
+    skipped:   'joni_skip',
+    template:  'joni_tmpl',
+  };
+  const DEFAULT_TMPL = 'שלום [שם], זה JONI 😊';
+
+  // ── State ─────────────────────────────────────────────────
+  let contacts  = [];
+  let position  = 0;
+  let completed = new Set();
+  let skipped   = new Set();
+  let template  = DEFAULT_TMPL;
+  let called    = false;
+
+  // ── Persistence ───────────────────────────────────────────
+  function load() {
+    try {
+      const c = localStorage.getItem(K.contacts);
+      if (c) contacts = JSON.parse(c);
+      position = parseInt(localStorage.getItem(K.position) || '0') || 0;
+      const d = localStorage.getItem(K.completed);
+      if (d) completed = new Set(JSON.parse(d));
+      const s = localStorage.getItem(K.skipped);
+      if (s) skipped = new Set(JSON.parse(s));
+      template = localStorage.getItem(K.template) || DEFAULT_TMPL;
+    } catch(_) {}
+  }
+
+  function save() {
+    localStorage.setItem(K.contacts,  JSON.stringify(contacts));
+    localStorage.setItem(K.position,  String(position));
+    localStorage.setItem(K.completed, JSON.stringify([...completed]));
+    localStorage.setItem(K.skipped,   JSON.stringify([...skipped]));
+    localStorage.setItem(K.template,  template);
+  }
+
+  // ── Screens ───────────────────────────────────────────────
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('s-' + id).classList.add('active');
+  }
+
+  function showCalling() { show('calling'); render(); }
+  function showSettings() {
+    document.getElementById('wa-tmpl').value = template;
+    show('settings');
+  }
+
+  // ── Render ────────────────────────────────────────────────
+  function render() {
+    called = false;
+    setCallState(false);
+
+    // advance past already-done entries
+    while (position < contacts.length && (completed.has(position) || skipped.has(position))) {
+      position++;
+    }
+
+    if (position >= contacts.length) {
+      show('done');
+      return;
+    }
+
+    const c   = contacts[position];
+    const tot = contacts.length;
+    const done = completed.size;
+
+    document.getElementById('c-name').textContent  = c.name  || formatPhone(c.phone);
+    document.getElementById('c-phone').textContent = formatPhone(c.phone);
+    document.getElementById('c-group').textContent = c.group || '';
+    document.getElementById('av').textContent      = avatar(c.name);
+    document.getElementById('count-badge').textContent = `${done} / ${tot}`;
+    document.getElementById('prog').style.width = (tot > 0 ? done / tot * 100 : 0) + '%';
+  }
+
+  function avatar(name) {
+    if (!name) return '👤';
+    const ch = [...name.trim()][0] || '';
+    return /[֐-׿]/.test(ch) ? '👤' : ch.toUpperCase();
+  }
+
+  // ── Call flow ─────────────────────────────────────────────
+  function handleCall() {
+    const c = contacts[position];
+    if (!c) return;
+    const phone = '+' + c.phone.replace(/\D/g, '');
+    window.location.href = 'tel:' + phone;
+    called = true;
+    setCallState(true);
+  }
+
+  function setCallState(isCalled) {
+    const btn  = document.getElementById('btn-call');
+    const post = document.getElementById('post-btns');
+    if (isCalled) {
+      btn.className = 'btn-call called';
+      btn.textContent = '✓ חייגת';
+      post.classList.add('show');
+    } else {
+      btn.className = 'btn-call ready';
+      btn.textContent = '📞 חייג';
+      post.classList.remove('show');
+    }
+  }
+
+  function next() {
+    completed.add(position);
+    position++;
+    save();
+    render();
+  }
+
+  function skip() {
+    skipped.add(position);
+    position++;
+    save();
+    render();
+  }
+
+  function prev() {
+    if (position === 0) return;
+    position--;
+    while (position > 0 && skipped.has(position)) position--;
+    completed.delete(position);
+    save();
+    render();
+  }
+
+  function sendWA() {
+    const c = contacts[position];
+    if (!c) return;
+    const msg   = template.replace('[שם]', c.name || '').replace('[name]', c.name || '');
+    const phone = c.phone.replace(/\D/g, '');
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  // ── Settings actions ──────────────────────────────────────
+  function saveSettings() {
+    template = document.getElementById('wa-tmpl').value.trim() || DEFAULT_TMPL;
+    save();
+    showCalling();
+  }
+
+  function resetQueue() {
+    if (!confirm('לאפס את המיקום בתור? ההתקדמות תמחק.')) return;
+    position  = 0;
+    completed = new Set();
+    skipped   = new Set();
+    save();
+    showCalling();
+  }
+
+  function clearAll() {
+    if (!confirm('למחוק את כל הנתונים?')) return;
+    localStorage.clear();
+    contacts = []; position = 0;
+    completed = new Set(); skipped = new Set();
+    show('upload');
+  }
+
+  // ── Phone helpers ─────────────────────────────────────────
+  function formatPhone(raw) {
+    const d = raw.replace(/\D/g, '');
+    // 972XXXXXXXXX (12 digits) → 0XX-XXXXXXX
+    if (d.startsWith('972') && d.length === 12) {
+      const loc = '0' + d.slice(3);
+      return loc.slice(0, 3) + '-' + loc.slice(3);
+    }
+    return raw;
+  }
+
+  // ── Excel parsing ─────────────────────────────────────────
+  function findCol(headers, options) {
+    // exact match first, then partial
+    for (const opt of options) {
+      const i = headers.findIndex(h => h === opt);
+      if (i !== -1) return i;
+    }
+    for (const opt of options) {
+      const i = headers.findIndex(h => h.includes(opt));
+      if (i !== -1) return i;
+    }
+    return -1;
+  }
+
+  function parseExcel(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const wb   = XLSX.read(e.target.result, { type: 'array' });
+        const ws   = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+        if (rows.length < 2) return showErr('הקובץ ריק');
+
+        const hdrs = rows[0].map(h => String(h).trim());
+
+        const phoneIdx    = findCol(hdrs, ['מספר נייד','טלפון','נייד','phone','mobile']);
+        const fullNameIdx = findCol(hdrs, ['שם מלא','full name']);
+        const nameIdx     = findCol(hdrs, ['שם','name']);
+        const groupIdx    = findCol(hdrs, ['שם קבוצה','קבוצה','group']);
+
+        if (phoneIdx === -1) return showErr('לא נמצאה עמודת טלפון');
+
+        const parsed = [];
+        for (let i = 1; i < rows.length; i++) {
+          const r     = rows[i];
+          const phone = String(r[phoneIdx] || '').replace(/\D/g, '');
+          if (phone.length < 9) continue;
+
+          const full  = fullNameIdx !== -1 ? String(r[fullNameIdx] || '').trim() : '';
+          const short = nameIdx     !== -1 ? String(r[nameIdx]     || '').trim() : '';
+          const name  = full || short;
+          const group = groupIdx !== -1 ? String(r[groupIdx] || '').trim() : '';
+
+          parsed.push({ phone, name, group });
+        }
+
+        if (parsed.length === 0) return showErr('לא נמצאו מספרים תקינים');
+
+        contacts  = parsed;
+        position  = 0;
+        completed = new Set();
+        skipped   = new Set();
+        save();
+        showCalling();
+      } catch(err) {
+        showErr('שגיאה בקריאת הקובץ: ' + err.message);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function showErr(msg) {
+    const el = document.getElementById('upload-err');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  // ── Upload zone setup ─────────────────────────────────────
+  function setupUpload() {
+    const zone  = document.getElementById('drop-zone');
+    const input = document.getElementById('file-in');
+
+    zone.addEventListener('click',     () => input.click());
+    zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('drag');
+      if (e.dataTransfer.files[0]) parseExcel(e.dataTransfer.files[0]);
+    });
+    input.addEventListener('change', () => { if (input.files[0]) parseExcel(input.files[0]); });
+  }
+
+  // ── Boot ──────────────────────────────────────────────────
+  function init() {
+    load();
+    setupUpload();
+    if (contacts.length > 0) showCalling();
+    else show('upload');
+  }
+
+  return { init, handleCall, next, skip, prev, sendWA, showCalling, showSettings, saveSettings, resetQueue, clearAll };
+})();
+
+App.init();
+</script>
+</body>
+</html>
