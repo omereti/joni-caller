@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#111111">
-  <title>מחייג</title>
+  <title>מחייג JONI</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -282,6 +282,51 @@
     .total-val { color: var(--green); }
     .stats-card-label { font-size: 12px; color: var(--text2); margin-top: 2px; }
 
+    /* ── Sync bar ── */
+    .sync-bar {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 6px 16px; background: var(--surface2); flex-shrink: 0;
+      font-size: 12px; color: var(--text2);
+    }
+    .sync-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--text2);
+      transition: background .3s;
+    }
+    .sync-dot.green  { background: var(--green); }
+    .sync-dot.yellow { background: var(--gold); }
+    .sync-dot.red    { background: var(--red); }
+    .sync-code-display {
+      font-family: monospace; font-weight: 700; font-size: 13px;
+      color: var(--text); letter-spacing: 1px; cursor: pointer;
+    }
+    /* Sync setup screen */
+    .sync-setup-body {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 32px 24px; gap: 20px; text-align: center;
+    }
+    .sync-code-big {
+      font-family: monospace; font-size: 36px; font-weight: 800;
+      letter-spacing: 6px; color: var(--green);
+      background: var(--surface); padding: 16px 28px;
+      border-radius: var(--r); border: 2px solid var(--green);
+      cursor: pointer;
+    }
+    .sync-input {
+      width: 100%; padding: 14px 16px; font-size: 20px; font-family: monospace;
+      text-align: center; letter-spacing: 4px; text-transform: uppercase;
+      border: 2px solid var(--border); border-radius: 14px;
+      background: var(--surface); color: var(--text); font-weight: 700;
+    }
+    .sync-input:focus { outline: none; border-color: var(--blue); }
+    .btn-sync-connect {
+      width: 100%; padding: 17px; border: none; border-radius: var(--r);
+      font-size: 17px; font-weight: 700; background: var(--blue); color: #fff; cursor: pointer;
+    }
+    .btn-sync-new {
+      width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: var(--r);
+      font-size: 15px; font-weight: 500; background: none; color: var(--text2); cursor: pointer;
+    }
     /* ── Done ── */
     .done-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; gap: 12px; text-align: center; }
     .btn-restart { margin-top: 20px; padding: 18px 40px; border: none; border-radius: var(--r); font-size: 18px; font-weight: 700; background: var(--green); color: #fff; cursor: pointer; }
@@ -308,6 +353,11 @@
 <!-- ══ CALLING ═════════════════════════════════════════════════ -->
 <div id="s-calling" class="screen">
   <div class="prog-wrap"><div id="prog" class="prog-bar" style="width:0%"></div></div>
+  <div id="sync-bar" class="sync-bar" onclick="App.showSyncSetup()" style="cursor:pointer">
+    <div id="sync-dot" class="sync-dot"></div>
+    <span id="sync-label">לא מסונכרן</span>
+    <span id="sync-code-disp" class="sync-code-display" style="display:none"></span>
+  </div>
   <div class="topbar">
     <span id="count-badge" class="topbar-count">0 / 0</span>
     <span class="topbar-title">מחייג JONI</span>
@@ -385,6 +435,41 @@
   </div>
 </div>
 
+<!-- ══ SYNC SETUP ══════════════════════════════════════════════ -->
+<div id="s-sync" class="screen">
+  <div class="topbar">
+    <button class="btn-icon" onclick="App.showCalling()">✕</button>
+    <span class="topbar-title">סנכרון מכשירים</span>
+    <span style="width:36px"></span>
+  </div>
+  <div class="sync-setup-body">
+    <div style="font-size:56px">🔄</div>
+    <div style="font-size:22px;font-weight:800">סנכרון בין מכשירים</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.6">
+      הקוד הזה מחבר את כל המכשירים שלך.<br>
+      שינוי במחשב → מופיע מיד בפלאפון.
+    </div>
+
+    <div id="sync-my-code" style="width:100%">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:600">הקוד שלך — לחץ להעתקה:</div>
+      <div id="sync-code-big" class="sync-code-big" onclick="App.copySyncCode()">——</div>
+      <div id="sync-copy-msg" style="font-size:12px;color:var(--green);margin-top:6px;display:none">✓ הועתק!</div>
+    </div>
+
+    <div style="width:100%;border-top:1px solid var(--border);padding-top:20px">
+      <div style="font-size:13px;color:var(--text2);margin-bottom:8px;font-weight:600">
+        או הכנס קוד ממכשיר אחר:
+      </div>
+      <input id="sync-code-input" class="sync-input" type="text" maxlength="12"
+             placeholder="ABCD1234" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+      <div style="height:10px"></div>
+      <button class="btn-sync-connect" onclick="App.connectSyncCode()">התחבר לקוד זה</button>
+    </div>
+
+    <button class="btn-sync-new" onclick="App.newSyncCode()">צור קוד חדש</button>
+  </div>
+</div>
+
 <!-- ══ HISTORY ═════════════════════════════════════════════════ -->
 <div id="s-history" class="screen">
   <div class="topbar">
@@ -456,6 +541,7 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const App = (() => {
+  const SYNC_URL = 'https://t-gever.co.il/caller/sync.php';
   const K = {
     contacts:   'joni_contacts',
     position:   'joni_pos',
@@ -466,6 +552,8 @@ const App = (() => {
     totalCount: 'joni_total_count',
     lastDate:   'joni_last_date',
     history:    'joni_history',
+    syncCode:   'joni_sync_code',
+    lastPush:   'joni_last_push',
   };
   const DEFAULT_TMPL = 'שלום [שם], זה JONI 😊';
   const ANSWERS = {
@@ -478,17 +566,22 @@ const App = (() => {
     notint:     { emoji: '👎', label: 'לא מעוניין',   cls: 'oc-notint' },
   };
 
-  let contacts   = [];
-  let position   = 0;
-  let completed  = new Set();
-  let skipped    = new Set();
-  let template   = DEFAULT_TMPL;
-  let todayCount = 0;
-  let totalCount = 0;
-  let history    = [];  // [{phone,name,answer,interest,ts}]
-  let curAnswer  = null;   // answered / noanswer / callback
-  let curInterest = null;  // interested / notint
-  let histFilter = 'all';
+  let contacts    = [];
+  let position    = 0;
+  let completed   = new Set();
+  let skipped     = new Set();
+  let template    = DEFAULT_TMPL;
+  let todayCount  = 0;
+  let totalCount  = 0;
+  let history     = [];
+  let curAnswer   = null;
+  let curInterest = null;
+  let histFilter  = 'all';
+  let syncCode    = '';
+  let lastPushTs  = 0;
+  let lastPullTs  = 0;
+  let syncTimer   = null;
+  let isSyncing   = false;
 
   // ── Storage ───────────────────────────────────────────────
   function load() {
@@ -503,6 +596,8 @@ const App = (() => {
       template = localStorage.getItem(K.template) || DEFAULT_TMPL;
       const h = localStorage.getItem(K.history);
       if (h) history = JSON.parse(h);
+      syncCode  = localStorage.getItem(K.syncCode) || '';
+      lastPushTs = parseInt(localStorage.getItem(K.lastPush) || '0');
       loadStats();
     } catch(_) {}
   }
@@ -526,6 +621,145 @@ const App = (() => {
     localStorage.setItem(K.skipped,   JSON.stringify([...skipped]));
     localStorage.setItem(K.template,  template);
     localStorage.setItem(K.history,   JSON.stringify(history));
+    pushSync(); // push to cloud after every save
+  }
+
+  // ── Sync ──────────────────────────────────────────────────
+  function syncPayload() {
+    return {
+      position:   position,
+      completed:  [...completed],
+      skipped:    [...skipped],
+      history:    history,
+      template:   template,
+      todayCount: todayCount,
+      totalCount: totalCount,
+      lastDate:   localStorage.getItem(K.lastDate) || '',
+      ts:         Date.now(),
+    };
+  }
+
+  async function pushSync() {
+    if (!syncCode || isSyncing) return;
+    isSyncing = true;
+    setSyncStatus('yellow', 'מסנכרן...');
+    try {
+      const res = await fetch(`${SYNC_URL}?code=${syncCode}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(syncPayload()),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        lastPushTs = data.serverTs;
+        lastPullTs = data.serverTs;
+        localStorage.setItem(K.lastPush, String(lastPushTs));
+        setSyncStatus('green', 'מסונכרן ✓');
+      } else { setSyncStatus('red', 'שגיאת סנכרון'); }
+    } catch(e) { setSyncStatus('red', 'אין חיבור'); }
+    isSyncing = false;
+  }
+
+  async function pullSync() {
+    if (!syncCode || isSyncing) return;
+    try {
+      const res = await fetch(`${SYNC_URL}?code=${syncCode}&_=${Date.now()}`);
+      const data = await res.json();
+      if (!data || !data.ts) return;
+      // Only apply if server has newer data than our last push
+      if (data.ts > lastPushTs + 1000) {
+        position    = data.position   || 0;
+        completed   = new Set(data.completed || []);
+        skipped     = new Set(data.skipped   || []);
+        history     = data.history    || [];
+        template    = data.template   || DEFAULT_TMPL;
+        todayCount  = data.todayCount || 0;
+        totalCount  = data.totalCount || 0;
+        if (data.lastDate) localStorage.setItem(K.lastDate, data.lastDate);
+        lastPullTs  = data.ts;
+        lastPushTs  = data.ts;
+        localStorage.setItem(K.lastPush, String(lastPushTs));
+        save();
+        // re-render if on calling screen
+        if (document.getElementById('s-calling').classList.contains('active')) render();
+        setSyncStatus('green', 'מסונכרן ✓');
+      } else {
+        setSyncStatus('green', 'מסונכרן ✓');
+      }
+    } catch(e) { setSyncStatus('red', 'אין חיבור'); }
+  }
+
+  function startSyncLoop() {
+    stopSyncLoop();
+    if (!syncCode) return;
+    updateSyncBar();
+    pushSync();
+    syncTimer = setInterval(pullSync, 5000);
+  }
+
+  function stopSyncLoop() {
+    if (syncTimer) { clearInterval(syncTimer); syncTimer = null; }
+  }
+
+  function setSyncStatus(color, label) {
+    const dot = document.getElementById('sync-dot');
+    const lbl = document.getElementById('sync-label');
+    if (dot) { dot.className = 'sync-dot ' + color; }
+    if (lbl) lbl.textContent = label;
+  }
+
+  function updateSyncBar() {
+    const disp = document.getElementById('sync-code-disp');
+    if (!syncCode) {
+      setSyncStatus('', 'לחץ לסנכרון בין מכשירים');
+      if (disp) disp.style.display = 'none';
+    } else {
+      if (disp) { disp.textContent = syncCode; disp.style.display = ''; }
+      setSyncStatus('yellow', '');
+    }
+    const big = document.getElementById('sync-code-big');
+    if (big) big.textContent = syncCode || '——';
+  }
+
+  function genCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return code;
+  }
+
+  function showSyncSetup() {
+    updateSyncBar();
+    document.getElementById('sync-code-input').value = '';
+    show('sync');
+  }
+
+  function copySyncCode() {
+    if (!syncCode) return;
+    navigator.clipboard.writeText(syncCode).catch(() => {});
+    const msg = document.getElementById('sync-copy-msg');
+    if (msg) { msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 2000); }
+  }
+
+  function connectSyncCode() {
+    const val = document.getElementById('sync-code-input').value.trim().toUpperCase();
+    if (val.length < 4) { alert('קוד קצר מדי'); return; }
+    syncCode = val;
+    localStorage.setItem(K.syncCode, syncCode);
+    lastPushTs = 0;
+    localStorage.setItem(K.lastPush, '0');
+    startSyncLoop();
+    showCalling();
+  }
+
+  function newSyncCode() {
+    if (!confirm('ליצור קוד סנכרון חדש? הקוד הישן יפסיק לעבוד.')) return;
+    syncCode = genCode();
+    localStorage.setItem(K.syncCode, syncCode);
+    lastPushTs = 0;
+    localStorage.setItem(K.lastPush, '0');
+    updateSyncBar();
+    pushSync();
   }
 
   function trackCall() {
@@ -845,11 +1079,18 @@ const App = (() => {
 
   function init() {
     load(); setupUpload();
+    if (syncCode) startSyncLoop();
+    updateSyncBar();
     if (contacts.length > 0) showCalling();
     else show('upload');
   }
 
-  return { init, handleCall, setOutcome, next, skip, prev, sendWA, showCalling, showSettings, showHistory, filterHistory, saveSettings, resetStats, clearHistory, resetQueue, clearAll };
+  return {
+    init, handleCall, setOutcome, next, skip, prev, sendWA,
+    showCalling, showSettings, showHistory, filterHistory,
+    showSyncSetup, copySyncCode, connectSyncCode, newSyncCode,
+    saveSettings, resetStats, clearHistory, resetQueue, clearAll,
+  };
 })();
 
 App.init();
