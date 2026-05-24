@@ -121,32 +121,37 @@
 
     /* ── Outcome buttons ── */
     .outcome-wrap {
-      overflow: hidden; max-height: 0; opacity: 0;
-      transition: max-height .3s ease, opacity .25s ease;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
     }
-    .outcome-wrap.show { max-height: 140px; opacity: 1; }
+    .outcome-wrap.show { display: flex; }
 
-    .outcome-label {
-      font-size: 12px; color: var(--text2); text-align: center;
-      margin-bottom: 6px; font-weight: 600; letter-spacing: .3px;
+    .outcome-row-label {
+      font-size: 11px; color: var(--text2); font-weight: 700;
+      text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px;
     }
-    .outcome-grid {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+    .outcome-row {
+      display: flex; gap: 6px;
     }
     .btn-outcome {
-      padding: 8px 4px; border: 1.5px solid var(--border);
-      border-radius: 12px; background: var(--surface);
+      flex: 1; padding: 9px 4px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px; background: var(--bg);
       cursor: pointer; transition: all .15s;
       display: flex; flex-direction: column; align-items: center; gap: 3px;
     }
     .btn-outcome .o-emoji { font-size: 20px; line-height: 1; }
-    .btn-outcome .o-text  { font-size: 10px; color: var(--text2); font-weight: 600; text-align: center; }
-    .btn-outcome.selected { border-color: currentColor; }
+    .btn-outcome .o-text  { font-size: 10px; color: var(--text2); font-weight: 600; }
     .btn-outcome.sel-answered   { border-color: var(--green);  background: #30d15820; color: var(--green); }
     .btn-outcome.sel-noanswer   { border-color: var(--red);    background: #ff453a20; color: var(--red); }
     .btn-outcome.sel-callback   { border-color: var(--orange); background: #ff9f0a20; color: var(--orange); }
     .btn-outcome.sel-interested { border-color: var(--blue);   background: #0a84ff20; color: var(--blue); }
-    .btn-outcome.sel-notint     { border-color: var(--text2);  background: var(--surface2); }
+    .btn-outcome.sel-notint     { border-color: var(--text2);  background: var(--surface2); color: var(--text2); }
 
     /* ── Post-call buttons ── */
     .post-btns {
@@ -336,21 +341,24 @@
 
     <!-- Outcome buttons -->
     <div id="outcome-wrap" class="outcome-wrap">
-      <div class="outcome-label">מה היתה התשובה?</div>
-      <div class="outcome-grid">
-        <button class="btn-outcome" data-key="answered"   onclick="App.setOutcome(this)">
+      <div class="outcome-row-label">האם ענה?</div>
+      <div class="outcome-row" id="row-answer">
+        <button class="btn-outcome" data-group="answer" data-key="answered" onclick="App.setOutcome(this)">
           <span class="o-emoji">✅</span><span class="o-text">ענה</span>
         </button>
-        <button class="btn-outcome" data-key="noanswer"   onclick="App.setOutcome(this)">
+        <button class="btn-outcome" data-group="answer" data-key="noanswer" onclick="App.setOutcome(this)">
           <span class="o-emoji">❌</span><span class="o-text">לא ענה</span>
         </button>
-        <button class="btn-outcome" data-key="callback"   onclick="App.setOutcome(this)">
+        <button class="btn-outcome" data-group="answer" data-key="callback" onclick="App.setOutcome(this)">
           <span class="o-emoji">🔄</span><span class="o-text">שוב</span>
         </button>
-        <button class="btn-outcome" data-key="interested" onclick="App.setOutcome(this)">
+      </div>
+      <div class="outcome-row-label" style="margin-top:4px">האם מעוניין?</div>
+      <div class="outcome-row" id="row-interest">
+        <button class="btn-outcome" data-group="interest" data-key="interested" onclick="App.setOutcome(this)">
           <span class="o-emoji">👍</span><span class="o-text">מעוניין</span>
         </button>
-        <button class="btn-outcome" data-key="notint"     onclick="App.setOutcome(this)">
+        <button class="btn-outcome" data-group="interest" data-key="notint" onclick="App.setOutcome(this)">
           <span class="o-emoji">👎</span><span class="o-text">לא מעוניין</span>
         </button>
       </div>
@@ -460,12 +468,14 @@ const App = (() => {
     history:    'joni_history',
   };
   const DEFAULT_TMPL = 'שלום [שם], זה JONI 😊';
-  const OUTCOMES = {
-    answered:   { emoji: '✅', label: 'ענה',               cls: 'oc-answered',   selCls: 'sel-answered' },
-    noanswer:   { emoji: '❌', label: 'לא ענה',             cls: 'oc-noanswer',   selCls: 'sel-noanswer' },
-    callback:   { emoji: '🔄', label: 'להתקשר שוב',        cls: 'oc-callback',   selCls: 'sel-callback' },
-    interested: { emoji: '👍', label: 'מעוניין',            cls: 'oc-interested', selCls: 'sel-interested' },
-    notint:     { emoji: '👎', label: 'לא מעוניין',         cls: 'oc-notint',     selCls: 'sel-notint' },
+  const ANSWERS = {
+    answered: { emoji: '✅', label: 'ענה',            cls: 'oc-answered' },
+    noanswer: { emoji: '❌', label: 'לא ענה',          cls: 'oc-noanswer' },
+    callback: { emoji: '🔄', label: 'להתקשר שוב',     cls: 'oc-callback' },
+  };
+  const INTERESTS = {
+    interested: { emoji: '👍', label: 'מעוניין',      cls: 'oc-interested' },
+    notint:     { emoji: '👎', label: 'לא מעוניין',   cls: 'oc-notint' },
   };
 
   let contacts   = [];
@@ -475,8 +485,9 @@ const App = (() => {
   let template   = DEFAULT_TMPL;
   let todayCount = 0;
   let totalCount = 0;
-  let history    = [];  // [{phone,name,outcome,ts}]
-  let curOutcome = null;
+  let history    = [];  // [{phone,name,answer,interest,ts}]
+  let curAnswer  = null;   // answered / noanswer / callback
+  let curInterest = null;  // interested / notint
   let histFilter = 'all';
 
   // ── Storage ───────────────────────────────────────────────
@@ -614,10 +625,8 @@ const App = (() => {
       btn.textContent = '✓ חייגת';
       outWrap.classList.add('show');
       post.classList.add('show');
-      // reset outcome buttons
-      document.querySelectorAll('.btn-outcome').forEach(b => {
-        b.className = 'btn-outcome';
-      });
+      document.querySelectorAll('.btn-outcome').forEach(b => b.className = 'btn-outcome');
+      curAnswer = null; curInterest = null;
     } else {
       btn.className   = 'btn-call ready';
       btn.textContent = '📞 חייג';
@@ -627,44 +636,38 @@ const App = (() => {
   }
 
   function setOutcome(btn) {
-    // deselect all
-    document.querySelectorAll('.btn-outcome').forEach(b => b.className = 'btn-outcome');
-    const key = btn.dataset.key;
-    btn.className = 'btn-outcome ' + OUTCOMES[key].selCls;
-    curOutcome = key;
-    // save to history immediately
-    const c = contacts[position];
-    addHistory(c, key);
+    const group = btn.dataset.group;
+    const key   = btn.dataset.key;
+    // deselect others in same group, toggle this one
+    document.querySelectorAll(`.btn-outcome[data-group="${group}"]`).forEach(b => b.className = 'btn-outcome');
+    if (group === 'answer') {
+      if (curAnswer === key) { curAnswer = null; }
+      else { curAnswer = key; btn.className = 'btn-outcome sel-' + key; }
+    } else {
+      if (curInterest === key) { curInterest = null; }
+      else { curInterest = key; btn.className = 'btn-outcome sel-' + key; }
+    }
+    saveCurrentOutcome();
   }
 
-  function addHistory(c, outcomeKey) {
-    // update existing entry for this call or add new
-    const existing = history.find(h => h.phone === c.phone && !h.finalized);
+  function saveCurrentOutcome() {
+    const c = contacts[position];
+    if (!c) return;
+    const existing = [...history].reverse().find(h => h.phone === c.phone && !h.finalized);
     if (existing) {
-      existing.outcome = outcomeKey;
+      existing.answer   = curAnswer;
+      existing.interest = curInterest;
     } else {
-      history.push({
-        phone: c.phone,
-        name:  c.name || '',
-        outcome: outcomeKey,
-        ts: Date.now(),
-        finalized: false,
-      });
+      history.push({ phone: c.phone, name: c.name || '', answer: curAnswer, interest: curInterest, ts: Date.now(), finalized: false });
     }
     save();
   }
 
   function next() {
-    // finalize history entry
     const c = contacts[position];
-    const entry = history.findLast ? history.findLast(h => h.phone === c.phone) : [...history].reverse().find(h => h.phone === c.phone);
-    if (entry) {
-      entry.finalized = true;
-      if (!entry.outcome) entry.outcome = null;
-    } else if (!curOutcome) {
-      // no outcome selected, log as "no status"
-      history.push({ phone: c.phone, name: c.name || '', outcome: null, ts: Date.now(), finalized: true });
-    }
+    const entry = [...history].reverse().find(h => h.phone === c.phone && !h.finalized);
+    if (entry) { entry.finalized = true; }
+    else { history.push({ phone: c.phone, name: c.name || '', answer: null, interest: null, ts: Date.now(), finalized: true }); }
     completed.add(position);
     position++;
     save();
@@ -703,7 +706,10 @@ const App = (() => {
   }
 
   function renderHistory() {
-    const list = [...history].reverse().filter(h => histFilter === 'all' || h.outcome === histFilter);
+    const list = [...history].reverse().filter(h => {
+      if (histFilter === 'all') return true;
+      return h.answer === histFilter || h.interest === histFilter;
+    });
     const container = document.getElementById('hist-list');
 
     if (!list.length) {
@@ -712,20 +718,26 @@ const App = (() => {
     }
 
     container.innerHTML = list.map(h => {
-      const o   = h.outcome ? OUTCOMES[h.outcome] : { emoji: '•', label: 'ללא סטטוס', cls: 'oc-notint' };
-      const dt  = new Date(h.ts);
+      const a  = h.answer   ? ANSWERS[h.answer]     : null;
+      const i  = h.interest ? INTERESTS[h.interest] : null;
+      const primaryEmoji = a ? a.emoji : '•';
+      const primaryCls   = a ? a.cls   : 'oc-notint';
+      const dt   = new Date(h.ts);
       const date = dt.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit' });
       const time = dt.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+      const tags = [a, i].filter(Boolean).map(o =>
+        `<span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:8px" class="${o.cls}">${o.emoji} ${o.label}</span>`
+      ).join(' ');
       return `
         <div class="hist-item">
-          <div class="hist-outcome-dot ${o.cls}">${o.emoji}</div>
+          <div class="hist-outcome-dot ${primaryCls}">${primaryEmoji}</div>
           <div class="hist-info">
             <div class="hist-name ${h.name ? '' : 'no-name'}">${h.name || 'ללא שם'}</div>
             <div class="hist-phone">${formatPhone(h.phone)}</div>
+            ${tags ? `<div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${tags}</div>` : ''}
           </div>
           <div class="hist-meta">
-            <div class="hist-outcome-label" style="color:inherit">${o.label}</div>
-            <div class="hist-time">${date} ${time}</div>
+            <div class="hist-time">${date}<br>${time}</div>
           </div>
         </div>`;
     }).join('');
