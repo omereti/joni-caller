@@ -20,6 +20,7 @@
       --blue:     #0a84ff;
       --red:      #ff453a;
       --border:   #38383a;
+      --gold:     #ffd60a;
       --r:        18px;
     }
     @media (prefers-color-scheme: light) {
@@ -90,28 +91,50 @@
       border-radius: 0 2px 2px 0;
     }
 
+    /* ── Stats bar ─────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 10px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+    .stat-icon { font-size: 16px; }
+    .stat-label { color: var(--text2); }
+    .stat-value { font-weight: 700; font-size: 16px; }
+    .stat-today .stat-value { color: var(--gold); }
+    .stat-total .stat-value { color: var(--green); }
+
     /* ── Contact card ──────────────────────────────── */
     .contact-card {
-      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px 28px 12px;
-      gap: 6px;
+      padding: 20px 28px 8px;
+      gap: 5px;
       text-align: center;
+      flex-shrink: 0;
     }
     .avatar {
-      width: 88px; height: 88px;
+      width: 76px; height: 76px;
       border-radius: 50%;
       background: var(--surface2);
       display: flex; align-items: center; justify-content: center;
-      font-size: 42px;
-      margin-bottom: 10px;
+      font-size: 38px;
+      margin-bottom: 8px;
       border: 3px solid var(--border);
     }
     .c-name {
-      font-size: 34px;
+      font-size: 30px;
       font-weight: 800;
       line-height: 1.15;
       max-width: 100%;
@@ -120,7 +143,7 @@
       white-space: nowrap;
     }
     .c-phone {
-      font-size: 24px;
+      font-size: 22px;
       color: var(--text2);
       direction: ltr;
       letter-spacing: 1px;
@@ -133,80 +156,140 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      margin-top: 2px;
     }
 
     /* ── Action area ───────────────────────────────── */
     .action-area {
-      padding: 0 22px 12px;
+      padding: 8px 22px 8px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
     }
-
-    /* big call button */
     .btn-call {
       width: 100%;
-      padding: 22px;
+      padding: 20px;
       border: none; border-radius: var(--r);
       font-size: 22px; font-weight: 800;
       cursor: pointer;
       transition: background .2s, opacity .2s, transform .1s;
-      letter-spacing: .3px;
     }
     .btn-call:active { transform: scale(.97); }
     .btn-call.ready  { background: var(--green); color: #fff; }
     .btn-call.called { background: var(--surface2); color: var(--text2); }
 
-    /* post-call buttons */
     .post-btns {
-      display: flex; flex-direction: column; gap: 12px;
+      display: flex; flex-direction: column; gap: 10px;
       overflow: hidden;
-      max-height: 0;
-      opacity: 0;
+      max-height: 0; opacity: 0;
       transition: max-height .35s ease, opacity .3s ease;
     }
-    .post-btns.show { max-height: 220px; opacity: 1; }
+    .post-btns.show { max-height: 200px; opacity: 1; }
 
     .btn-wa {
-      width: 100%;
-      padding: 19px;
+      width: 100%; padding: 17px;
       border: none; border-radius: var(--r);
       font-size: 18px; font-weight: 700;
-      cursor: pointer;
-      background: var(--wa); color: #fff;
+      cursor: pointer; background: var(--wa); color: #fff;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: opacity .15s;
     }
-    .btn-wa:active { opacity: .85; }
-
     .btn-next {
-      width: 100%;
-      padding: 19px;
+      width: 100%; padding: 17px;
       border: none; border-radius: var(--r);
       font-size: 18px; font-weight: 700;
-      cursor: pointer;
-      background: var(--blue); color: #fff;
-      transition: opacity .15s;
+      cursor: pointer; background: var(--blue); color: #fff;
     }
-    .btn-next:active { opacity: .85; }
 
-    /* secondary row */
+    /* ── Secondary row ─────────────────────────────── */
     .sec-row {
       display: flex; gap: 10px;
-      padding: 0 22px 28px;
+      padding: 0 22px 10px;
+      flex-shrink: 0;
     }
     .btn-sec {
-      flex: 1;
-      padding: 13px;
+      flex: 1; padding: 12px;
       border: 1px solid var(--border);
       border-radius: 14px;
       background: none; color: var(--text2);
       font-size: 15px; font-weight: 500;
       cursor: pointer;
-      transition: background .15s;
     }
     .btn-sec:active { background: var(--surface2); }
+
+    /* ── Next 10 list ──────────────────────────────── */
+    .next-section {
+      flex: 1;
+      margin: 0 22px 22px;
+      background: var(--surface);
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .next-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .next-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .next-count-badge {
+      font-size: 12px;
+      background: var(--surface2);
+      color: var(--text2);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    .next-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .next-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .next-item:last-child { border-bottom: none; }
+    .next-num {
+      font-size: 13px;
+      color: var(--text2);
+      font-weight: 600;
+      min-width: 22px;
+      text-align: center;
+    }
+    .next-info { flex: 1; min-width: 0; }
+    .next-name {
+      font-size: 15px;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .next-name.no-name { color: var(--text2); font-weight: 400; font-style: italic; }
+    .next-phone {
+      font-size: 13px;
+      color: var(--text2);
+      direction: ltr;
+    }
+    .next-empty {
+      padding: 24px 16px;
+      text-align: center;
+      color: var(--text2);
+      font-size: 14px;
+    }
 
     /* ── Upload screen ─────────────────────────────── */
     .upload-body {
@@ -220,8 +303,7 @@
     .upload-title { font-size: 28px; font-weight: 800; }
     .upload-sub { font-size: 16px; color: var(--text2); line-height: 1.55; }
     .drop-zone {
-      width: 100%;
-      padding: 36px 20px;
+      width: 100%; padding: 36px 20px;
       border: 2px dashed var(--border);
       border-radius: var(--r);
       background: var(--surface);
@@ -229,73 +311,70 @@
       transition: border-color .2s, background .2s;
     }
     .drop-zone:hover, .drop-zone.drag { border-color: var(--green); background: var(--surface2); }
-    .drop-zone-text { font-size: 16px; font-weight: 600; }
-    .drop-zone-sub  { font-size: 14px; color: var(--text2); margin-top: 4px; }
-    .btn-upload {
-      width: 100%;
-      padding: 19px;
-      border: none; border-radius: var(--r);
-      font-size: 18px; font-weight: 700;
-      background: var(--green); color: #fff;
-      cursor: pointer;
-    }
     .upload-err { color: var(--red); font-size: 14px; display: none; }
 
-    /* ── Settings screen ───────────────────────────── */
+    /* ── Settings ──────────────────────────────────── */
     .settings-body {
-      flex: 1;
-      padding: 24px 22px;
-      display: flex; flex-direction: column;
-      gap: 22px;
+      flex: 1; padding: 24px 22px;
+      display: flex; flex-direction: column; gap: 22px;
       overflow-y: auto;
     }
-    .setting-label { font-size: 14px; color: var(--text2); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+    .setting-label {
+      font-size: 13px; color: var(--text2); margin-bottom: 8px;
+      font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
+    }
     textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--surface);
-      color: var(--text);
+      width: 100%; padding: 14px 16px;
+      border: 1px solid var(--border); border-radius: 14px;
+      background: var(--surface); color: var(--text);
       font-size: 17px; font-family: inherit;
       resize: vertical; min-height: 110px;
     }
     .hint { font-size: 13px; color: var(--text2); margin-top: 6px; }
     .btn-save {
-      padding: 17px;
-      border: none; border-radius: var(--r);
+      padding: 17px; border: none; border-radius: var(--r);
       font-size: 17px; font-weight: 700;
-      background: var(--green); color: #fff;
-      cursor: pointer;
+      background: var(--green); color: #fff; cursor: pointer;
     }
     .btn-danger {
-      padding: 15px;
-      border: 1px solid var(--red);
-      border-radius: var(--r);
+      padding: 15px; border: 1px solid var(--red); border-radius: var(--r);
       font-size: 15px; font-weight: 500;
-      background: none; color: var(--red);
-      cursor: pointer;
-      width: 100%;
+      background: none; color: var(--red); cursor: pointer; width: 100%;
     }
     .danger-area { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
 
+    /* stats in settings */
+    .stats-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px;
+      display: flex;
+      gap: 0;
+    }
+    .stats-card-item {
+      flex: 1;
+      text-align: center;
+    }
+    .stats-card-item:not(:last-child) {
+      border-left: 1px solid var(--border);
+    }
+    .stats-card-value { font-size: 32px; font-weight: 800; }
+    .stats-card-label { font-size: 13px; color: var(--text2); margin-top: 2px; }
+    .today-val { color: var(--gold); }
+    .total-val { color: var(--green); }
+
     /* ── Done screen ───────────────────────────────── */
     .done-body {
-      flex: 1;
-      display: flex; flex-direction: column;
+      flex: 1; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       padding: 32px 28px; gap: 14px; text-align: center;
     }
-    .done-emoji { font-size: 80px; line-height: 1; }
-    .done-title { font-size: 30px; font-weight: 800; }
-    .done-sub   { font-size: 16px; color: var(--text2); }
     .btn-restart {
-      margin-top: 24px;
-      padding: 18px 40px;
+      margin-top: 24px; padding: 18px 40px;
       border: none; border-radius: var(--r);
       font-size: 18px; font-weight: 700;
-      background: var(--green); color: #fff;
-      cursor: pointer;
+      background: var(--green); color: #fff; cursor: pointer;
     }
   </style>
 </head>
@@ -306,11 +385,11 @@
   <div class="upload-body">
     <div class="upload-icon">📋</div>
     <div class="upload-title">מחייג JONI</div>
-    <div class="upload-sub">העלה את קובץ האנשי קשר שלך (Excel).<br>הנתונים נשמרים רק במכשיר שלך — לא עוזבים אותו.</div>
+    <div class="upload-sub">העלה את קובץ האנשי קשר שלך (Excel).<br>הנתונים נשמרים רק במכשיר שלך.</div>
     <div id="drop-zone" class="drop-zone">
       <div style="font-size:40px;margin-bottom:10px">📂</div>
-      <div class="drop-zone-text">גרור קובץ Excel לכאן</div>
-      <div class="drop-zone-sub">או לחץ לבחירת קובץ</div>
+      <div style="font-size:16px;font-weight:600;margin-bottom:4px">גרור קובץ Excel לכאן</div>
+      <div style="font-size:14px;color:var(--text2)">או לחץ לבחירת קובץ</div>
       <input id="file-in" type="file" accept=".xlsx,.xls" style="display:none">
     </div>
     <div id="upload-err" class="upload-err"></div>
@@ -320,10 +399,26 @@
 <!-- ══ CALLING ═════════════════════════════════════════════════ -->
 <div id="s-calling" class="screen">
   <div class="prog-wrap"><div id="prog" class="prog-bar" style="width:0%"></div></div>
+
   <div class="topbar">
     <span id="count-badge" class="topbar-count">0 / 0</span>
     <span class="topbar-title">מחייג JONI</span>
-    <button class="btn-icon" onclick="App.showSettings()" title="הגדרות">⚙️</button>
+    <button class="btn-icon" onclick="App.showSettings()">⚙️</button>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat-item stat-today">
+      <span class="stat-icon">📅</span>
+      <span class="stat-label">היום:</span>
+      <span id="stat-today" class="stat-value">0</span>
+    </div>
+    <div style="width:1px;background:var(--border)"></div>
+    <div class="stat-item stat-total">
+      <span class="stat-icon">📊</span>
+      <span class="stat-label">סה"כ:</span>
+      <span id="stat-total" class="stat-value">0</span>
+    </div>
   </div>
 
   <div class="contact-card">
@@ -345,6 +440,15 @@
     <button class="btn-sec" onclick="App.prev()">◀ חזור</button>
     <button class="btn-sec" onclick="App.skip()">דלג ▶</button>
   </div>
+
+  <!-- Next 10 -->
+  <div class="next-section">
+    <div class="next-header">
+      <span class="next-title">🔜 הבאים בתור</span>
+      <span id="next-count-badge" class="next-count-badge"></span>
+    </div>
+    <div id="next-list" class="next-list"></div>
+  </div>
 </div>
 
 <!-- ══ SETTINGS ════════════════════════════════════════════════ -->
@@ -355,6 +459,22 @@
     <span style="width:36px"></span>
   </div>
   <div class="settings-body">
+
+    <!-- Stats card -->
+    <div>
+      <div class="setting-label">סטטיסטיקות שיחות</div>
+      <div class="stats-card">
+        <div class="stats-card-item">
+          <div id="set-today" class="stats-card-value today-val">0</div>
+          <div class="stats-card-label">📅 היום</div>
+        </div>
+        <div class="stats-card-item">
+          <div id="set-total" class="stats-card-value total-val">0</div>
+          <div class="stats-card-label">📊 סה"כ</div>
+        </div>
+      </div>
+    </div>
+
     <div>
       <div class="setting-label">תבנית הודעת WhatsApp</div>
       <textarea id="wa-tmpl" rows="4"></textarea>
@@ -362,6 +482,7 @@
     </div>
     <button class="btn-save" onclick="App.saveSettings()">שמור</button>
     <div class="danger-area">
+      <button class="btn-danger" onclick="App.resetStats()">אפס סטטיסטיקות</button>
       <button class="btn-danger" onclick="App.resetQueue()">אפס מיקום בתור</button>
       <button class="btn-danger" onclick="App.clearAll()">מחק את כל הנתונים</button>
     </div>
@@ -371,9 +492,13 @@
 <!-- ══ DONE ════════════════════════════════════════════════════ -->
 <div id="s-done" class="screen">
   <div class="done-body">
-    <div class="done-emoji">🎉</div>
-    <div class="done-title">סיימת!</div>
-    <div class="done-sub">התקשרת לכל אנשי הקשר</div>
+    <div style="font-size:80px">🎉</div>
+    <div style="font-size:30px;font-weight:800">סיימת!</div>
+    <div style="font-size:16px;color:var(--text2)">התקשרת לכל אנשי הקשר</div>
+    <div style="font-size:15px;margin-top:8px">
+      היום: <strong id="done-today" style="color:var(--gold)">0</strong> שיחות &nbsp;|&nbsp;
+      סה"כ: <strong id="done-total" style="color:var(--green)">0</strong> שיחות
+    </div>
     <button class="btn-restart" onclick="App.resetQueue()">התחל מחדש</button>
   </div>
 </div>
@@ -381,23 +506,27 @@
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const App = (() => {
-  // ── Storage keys ──────────────────────────────────────────
   const K = {
-    contacts:  'joni_contacts',
-    position:  'joni_pos',
-    completed: 'joni_done',
-    skipped:   'joni_skip',
-    template:  'joni_tmpl',
+    contacts:   'joni_contacts',
+    position:   'joni_pos',
+    completed:  'joni_done',
+    skipped:    'joni_skip',
+    template:   'joni_tmpl',
+    todayCount: 'joni_today_count',
+    totalCount: 'joni_total_count',
+    lastDate:   'joni_last_date',
   };
   const DEFAULT_TMPL = 'שלום [שם], זה JONI 😊';
+  const NEXT_COUNT = 10;
 
-  // ── State ─────────────────────────────────────────────────
   let contacts  = [];
   let position  = 0;
   let completed = new Set();
   let skipped   = new Set();
   let template  = DEFAULT_TMPL;
   let called    = false;
+  let todayCount = 0;
+  let totalCount = 0;
 
   // ── Persistence ───────────────────────────────────────────
   function load() {
@@ -410,7 +539,21 @@ const App = (() => {
       const s = localStorage.getItem(K.skipped);
       if (s) skipped = new Set(JSON.parse(s));
       template = localStorage.getItem(K.template) || DEFAULT_TMPL;
+      loadStats();
     } catch(_) {}
+  }
+
+  function loadStats() {
+    const today = new Date().toDateString();
+    const lastDate = localStorage.getItem(K.lastDate) || '';
+    if (lastDate !== today) {
+      todayCount = 0;
+      localStorage.setItem(K.lastDate, today);
+      localStorage.setItem(K.todayCount, '0');
+    } else {
+      todayCount = parseInt(localStorage.getItem(K.todayCount) || '0');
+    }
+    totalCount = parseInt(localStorage.getItem(K.totalCount) || '0');
   }
 
   function save() {
@@ -419,6 +562,29 @@ const App = (() => {
     localStorage.setItem(K.completed, JSON.stringify([...completed]));
     localStorage.setItem(K.skipped,   JSON.stringify([...skipped]));
     localStorage.setItem(K.template,  template);
+  }
+
+  function trackCall() {
+    const today = new Date().toDateString();
+    const lastDate = localStorage.getItem(K.lastDate) || '';
+    if (lastDate !== today) {
+      todayCount = 0;
+      localStorage.setItem(K.lastDate, today);
+    }
+    todayCount++;
+    totalCount++;
+    localStorage.setItem(K.todayCount, String(todayCount));
+    localStorage.setItem(K.totalCount, String(totalCount));
+    updateStatsUI();
+  }
+
+  function updateStatsUI() {
+    document.getElementById('stat-today').textContent = todayCount;
+    document.getElementById('stat-total').textContent = totalCount;
+    document.getElementById('set-today').textContent  = todayCount;
+    document.getElementById('set-total').textContent  = totalCount;
+    document.getElementById('done-today').textContent = todayCount;
+    document.getElementById('done-total').textContent = totalCount;
   }
 
   // ── Screens ───────────────────────────────────────────────
@@ -430,6 +596,7 @@ const App = (() => {
   function showCalling() { show('calling'); render(); }
   function showSettings() {
     document.getElementById('wa-tmpl').value = template;
+    updateStatsUI();
     show('settings');
   }
 
@@ -438,12 +605,12 @@ const App = (() => {
     called = false;
     setCallState(false);
 
-    // advance past already-done entries
     while (position < contacts.length && (completed.has(position) || skipped.has(position))) {
       position++;
     }
 
     if (position >= contacts.length) {
+      updateStatsUI();
       show('done');
       return;
     }
@@ -452,12 +619,52 @@ const App = (() => {
     const tot = contacts.length;
     const done = completed.size;
 
-    document.getElementById('c-name').textContent  = c.name  || formatPhone(c.phone);
+    document.getElementById('c-name').textContent  = c.name || formatPhone(c.phone);
     document.getElementById('c-phone').textContent = formatPhone(c.phone);
     document.getElementById('c-group').textContent = c.group || '';
     document.getElementById('av').textContent      = avatar(c.name);
     document.getElementById('count-badge').textContent = `${done} / ${tot}`;
     document.getElementById('prog').style.width = (tot > 0 ? done / tot * 100 : 0) + '%';
+
+    updateStatsUI();
+    renderNextTen();
+  }
+
+  function renderNextTen() {
+    const list = [];
+    for (let i = position + 1; i < contacts.length && list.length < NEXT_COUNT; i++) {
+      if (!completed.has(i) && !skipped.has(i)) {
+        list.push({ idx: i, c: contacts[i] });
+      }
+    }
+
+    const container = document.getElementById('next-list');
+    const badge = document.getElementById('next-count-badge');
+
+    // Count remaining (excluding current)
+    let remaining = 0;
+    for (let i = position + 1; i < contacts.length; i++) {
+      if (!completed.has(i) && !skipped.has(i)) remaining++;
+    }
+    badge.textContent = remaining > 0 ? `${remaining} נותרו` : 'זהו!';
+
+    if (list.length === 0) {
+      container.innerHTML = '<div class="next-empty">אין עוד מספרים בתור</div>';
+      return;
+    }
+
+    container.innerHTML = list.map((item, i) => {
+      const hasName = item.c.name && item.c.name.trim();
+      return `
+        <div class="next-item">
+          <div class="next-num">${i + 1}</div>
+          <div class="next-info">
+            <div class="next-name ${hasName ? '' : 'no-name'}">${hasName ? item.c.name : 'ללא שם'}</div>
+            <div class="next-phone">${formatPhone(item.c.phone)}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   function avatar(name) {
@@ -472,6 +679,7 @@ const App = (() => {
     if (!c) return;
     const phone = '+' + c.phone.replace(/\D/g, '');
     window.location.href = 'tel:' + phone;
+    trackCall();
     called = true;
     setCallState(true);
   }
@@ -528,11 +736,18 @@ const App = (() => {
     showCalling();
   }
 
+  function resetStats() {
+    if (!confirm('לאפס את כל הסטטיסטיקות?')) return;
+    todayCount = 0; totalCount = 0;
+    localStorage.setItem(K.todayCount, '0');
+    localStorage.setItem(K.totalCount, '0');
+    localStorage.setItem(K.lastDate, new Date().toDateString());
+    updateStatsUI();
+  }
+
   function resetQueue() {
-    if (!confirm('לאפס את המיקום בתור? ההתקדמות תמחק.')) return;
-    position  = 0;
-    completed = new Set();
-    skipped   = new Set();
+    if (!confirm('לאפס את המיקום בתור?')) return;
+    position = 0; completed = new Set(); skipped = new Set();
     save();
     showCalling();
   }
@@ -542,13 +757,13 @@ const App = (() => {
     localStorage.clear();
     contacts = []; position = 0;
     completed = new Set(); skipped = new Set();
+    todayCount = 0; totalCount = 0;
     show('upload');
   }
 
   // ── Phone helpers ─────────────────────────────────────────
   function formatPhone(raw) {
     const d = raw.replace(/\D/g, '');
-    // 972XXXXXXXXX (12 digits) → 0XX-XXXXXXX
     if (d.startsWith('972') && d.length === 12) {
       const loc = '0' + d.slice(3);
       return loc.slice(0, 3) + '-' + loc.slice(3);
@@ -558,7 +773,6 @@ const App = (() => {
 
   // ── Excel parsing ─────────────────────────────────────────
   function findCol(headers, options) {
-    // exact match first, then partial
     for (const opt of options) {
       const i = headers.findIndex(h => h === opt);
       if (i !== -1) return i;
@@ -580,7 +794,6 @@ const App = (() => {
         if (rows.length < 2) return showErr('הקובץ ריק');
 
         const hdrs = rows[0].map(h => String(h).trim());
-
         const phoneIdx    = findCol(hdrs, ['מספר נייד','טלפון','נייד','phone','mobile']);
         const fullNameIdx = findCol(hdrs, ['שם מלא','full name']);
         const nameIdx     = findCol(hdrs, ['שם','name']);
@@ -593,12 +806,10 @@ const App = (() => {
           const r     = rows[i];
           const phone = String(r[phoneIdx] || '').replace(/\D/g, '');
           if (phone.length < 9) continue;
-
           const full  = fullNameIdx !== -1 ? String(r[fullNameIdx] || '').trim() : '';
           const short = nameIdx     !== -1 ? String(r[nameIdx]     || '').trim() : '';
           const name  = full || short;
           const group = groupIdx !== -1 ? String(r[groupIdx] || '').trim() : '';
-
           parsed.push({ phone, name, group });
         }
 
@@ -611,7 +822,7 @@ const App = (() => {
         save();
         showCalling();
       } catch(err) {
-        showErr('שגיאה בקריאת הקובץ: ' + err.message);
+        showErr('שגיאה: ' + err.message);
       }
     };
     reader.readAsArrayBuffer(file);
@@ -623,11 +834,9 @@ const App = (() => {
     el.style.display = 'block';
   }
 
-  // ── Upload zone setup ─────────────────────────────────────
   function setupUpload() {
     const zone  = document.getElementById('drop-zone');
     const input = document.getElementById('file-in');
-
     zone.addEventListener('click',     () => input.click());
     zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag'); });
     zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
@@ -638,7 +847,6 @@ const App = (() => {
     input.addEventListener('change', () => { if (input.files[0]) parseExcel(input.files[0]); });
   }
 
-  // ── Boot ──────────────────────────────────────────────────
   function init() {
     load();
     setupUpload();
@@ -646,7 +854,7 @@ const App = (() => {
     else show('upload');
   }
 
-  return { init, handleCall, next, skip, prev, sendWA, showCalling, showSettings, saveSettings, resetQueue, clearAll };
+  return { init, handleCall, next, skip, prev, sendWA, showCalling, showSettings, saveSettings, resetQueue, resetStats, clearAll };
 })();
 
 App.init();
