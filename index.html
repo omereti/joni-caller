@@ -19,6 +19,8 @@
       --wa:       #25d366;
       --blue:     #0a84ff;
       --red:      #ff453a;
+      --orange:   #ff9f0a;
+      --purple:   #bf5af2;
       --border:   #38383a;
       --gold:     #ffd60a;
       --r:        18px;
@@ -42,340 +44,242 @@
       overflow: hidden;
     }
 
-    /* ── Screens ───────────────────────────────────── */
     .screen {
-      display: none;
-      position: fixed; inset: 0;
-      flex-direction: column;
-      background: var(--bg);
-      overflow-y: auto;
+      display: none; position: fixed; inset: 0;
+      flex-direction: column; background: var(--bg); overflow-y: auto;
     }
     .screen.active { display: flex; }
 
-    /* ── Top bar ───────────────────────────────────── */
+    /* ── Top bar ── */
     .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 20px 10px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px 10px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
     .topbar-title { font-size: 17px; font-weight: 700; }
     .topbar-count {
-      font-size: 13px;
-      color: var(--text2);
-      background: var(--surface2);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-weight: 600;
+      font-size: 13px; color: var(--text2);
+      background: var(--surface2); padding: 4px 10px;
+      border-radius: 20px; font-weight: 600;
     }
+    .topbar-actions { display: flex; gap: 4px; }
     .btn-icon {
-      background: none; border: none;
-      color: var(--text2); font-size: 22px;
-      cursor: pointer; padding: 6px; border-radius: 8px;
-      line-height: 1;
+      background: none; border: none; color: var(--text2);
+      font-size: 20px; cursor: pointer; padding: 6px;
+      border-radius: 8px; line-height: 1;
     }
 
-    /* ── Progress ──────────────────────────────────── */
-    .prog-wrap {
-      height: 4px;
-      background: var(--surface2);
-      flex-shrink: 0;
-    }
+    /* ── Progress ── */
+    .prog-wrap { height: 4px; background: var(--surface2); flex-shrink: 0; }
     .prog-bar {
-      height: 100%;
-      background: var(--green);
-      transition: width .4s ease;
-      border-radius: 0 2px 2px 0;
+      height: 100%; background: var(--green);
+      transition: width .4s ease; border-radius: 0 2px 2px 0;
     }
 
-    /* ── Stats bar ─────────────────────────────────── */
+    /* ── Stats bar ── */
     .stats-bar {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      padding: 10px 20px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
+      display: flex; justify-content: center; gap: 20px;
+      padding: 8px 16px; background: var(--surface);
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-    }
-    .stat-icon { font-size: 16px; }
+    .stat-item { display: flex; align-items: center; gap: 5px; font-size: 13px; }
     .stat-label { color: var(--text2); }
-    .stat-value { font-weight: 700; font-size: 16px; }
-    .stat-today .stat-value { color: var(--gold); }
-    .stat-total .stat-value { color: var(--green); }
+    .stat-value { font-weight: 700; font-size: 15px; }
+    .stat-today .stat-value  { color: var(--gold); }
+    .stat-total .stat-value  { color: var(--green); }
 
-    /* ── Contact card ──────────────────────────────── */
+    /* ── Contact card ── */
     .contact-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px 28px 8px;
-      gap: 5px;
-      text-align: center;
-      flex-shrink: 0;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 16px 28px 8px; gap: 4px; text-align: center; flex-shrink: 0;
     }
     .avatar {
-      width: 76px; height: 76px;
-      border-radius: 50%;
-      background: var(--surface2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 38px;
-      margin-bottom: 8px;
+      width: 70px; height: 70px; border-radius: 50%;
+      background: var(--surface2); display: flex; align-items: center;
+      justify-content: center; font-size: 34px; margin-bottom: 6px;
       border: 3px solid var(--border);
     }
     .c-name {
-      font-size: 30px;
-      font-weight: 800;
-      line-height: 1.15;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 28px; font-weight: 800; line-height: 1.15;
+      max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-    .c-phone {
-      font-size: 22px;
-      color: var(--text2);
-      direction: ltr;
-      letter-spacing: 1px;
-      font-weight: 500;
-    }
-    .c-group {
-      font-size: 13px;
-      color: var(--text2);
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+    .c-phone { font-size: 20px; color: var(--text2); direction: ltr; letter-spacing: 1px; }
+    .c-group { font-size: 12px; color: var(--text2); max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-    /* ── Action area ───────────────────────────────── */
-    .action-area {
-      padding: 8px 22px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex-shrink: 0;
-    }
+    /* ── Action area ── */
+    .action-area { padding: 8px 18px 6px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+
     .btn-call {
-      width: 100%;
-      padding: 20px;
-      border: none; border-radius: var(--r);
-      font-size: 22px; font-weight: 800;
-      cursor: pointer;
-      transition: background .2s, opacity .2s, transform .1s;
+      width: 100%; padding: 18px; border: none; border-radius: var(--r);
+      font-size: 21px; font-weight: 800; cursor: pointer;
+      transition: background .2s, transform .1s;
     }
     .btn-call:active { transform: scale(.97); }
     .btn-call.ready  { background: var(--green); color: #fff; }
     .btn-call.called { background: var(--surface2); color: var(--text2); }
 
+    /* ── Outcome buttons ── */
+    .outcome-wrap {
+      overflow: hidden; max-height: 0; opacity: 0;
+      transition: max-height .3s ease, opacity .25s ease;
+    }
+    .outcome-wrap.show { max-height: 140px; opacity: 1; }
+
+    .outcome-label {
+      font-size: 12px; color: var(--text2); text-align: center;
+      margin-bottom: 6px; font-weight: 600; letter-spacing: .3px;
+    }
+    .outcome-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+    }
+    .btn-outcome {
+      padding: 8px 4px; border: 1.5px solid var(--border);
+      border-radius: 12px; background: var(--surface);
+      cursor: pointer; transition: all .15s;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .btn-outcome .o-emoji { font-size: 20px; line-height: 1; }
+    .btn-outcome .o-text  { font-size: 10px; color: var(--text2); font-weight: 600; text-align: center; }
+    .btn-outcome.selected { border-color: currentColor; }
+    .btn-outcome.sel-answered   { border-color: var(--green);  background: #30d15820; color: var(--green); }
+    .btn-outcome.sel-noanswer   { border-color: var(--red);    background: #ff453a20; color: var(--red); }
+    .btn-outcome.sel-callback   { border-color: var(--orange); background: #ff9f0a20; color: var(--orange); }
+    .btn-outcome.sel-interested { border-color: var(--blue);   background: #0a84ff20; color: var(--blue); }
+    .btn-outcome.sel-notint     { border-color: var(--text2);  background: var(--surface2); }
+
+    /* ── Post-call buttons ── */
     .post-btns {
-      display: flex; flex-direction: column; gap: 10px;
-      overflow: hidden;
-      max-height: 0; opacity: 0;
+      display: flex; flex-direction: column; gap: 8px;
+      overflow: hidden; max-height: 0; opacity: 0;
       transition: max-height .35s ease, opacity .3s ease;
     }
-    .post-btns.show { max-height: 200px; opacity: 1; }
+    .post-btns.show { max-height: 160px; opacity: 1; }
 
     .btn-wa {
-      width: 100%; padding: 17px;
-      border: none; border-radius: var(--r);
-      font-size: 18px; font-weight: 700;
-      cursor: pointer; background: var(--wa); color: #fff;
+      width: 100%; padding: 16px; border: none; border-radius: var(--r);
+      font-size: 17px; font-weight: 700; cursor: pointer;
+      background: var(--wa); color: #fff;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .btn-next {
-      width: 100%; padding: 17px;
-      border: none; border-radius: var(--r);
-      font-size: 18px; font-weight: 700;
-      cursor: pointer; background: var(--blue); color: #fff;
+      width: 100%; padding: 16px; border: none; border-radius: var(--r);
+      font-size: 17px; font-weight: 700; cursor: pointer;
+      background: var(--blue); color: #fff;
     }
 
-    /* ── Secondary row ─────────────────────────────── */
-    .sec-row {
-      display: flex; gap: 10px;
-      padding: 0 22px 10px;
-      flex-shrink: 0;
-    }
+    /* ── Secondary row ── */
+    .sec-row { display: flex; gap: 10px; padding: 0 18px 8px; flex-shrink: 0; }
     .btn-sec {
-      flex: 1; padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: none; color: var(--text2);
-      font-size: 15px; font-weight: 500;
-      cursor: pointer;
+      flex: 1; padding: 11px; border: 1px solid var(--border);
+      border-radius: 14px; background: none; color: var(--text2);
+      font-size: 14px; font-weight: 500; cursor: pointer;
     }
     .btn-sec:active { background: var(--surface2); }
 
-    /* ── Next 10 list ──────────────────────────────── */
+    /* ── Next 10 ── */
     .next-section {
-      flex: 1;
-      margin: 0 22px 22px;
-      background: var(--surface);
-      border-radius: var(--r);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
+      flex: 1; margin: 0 18px 18px;
+      background: var(--surface); border-radius: var(--r);
+      border: 1px solid var(--border); overflow: hidden;
+      min-height: 0; display: flex; flex-direction: column;
     }
     .next-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0;
     }
-    .next-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text2);
-      text-transform: uppercase;
-      letter-spacing: .5px;
-    }
-    .next-count-badge {
-      font-size: 12px;
-      background: var(--surface2);
-      color: var(--text2);
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-weight: 600;
-    }
-    .next-list {
-      overflow-y: auto;
-      flex: 1;
-    }
+    .next-title { font-size: 13px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .4px; }
+    .next-badge { font-size: 12px; background: var(--surface2); color: var(--text2); padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+    .next-list { overflow-y: auto; flex: 1; }
     .next-item {
-      display: flex;
-      align-items: center;
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-      gap: 12px;
+      display: flex; align-items: center; padding: 9px 14px;
+      border-bottom: 1px solid var(--border); gap: 10px;
     }
     .next-item:last-child { border-bottom: none; }
-    .next-num {
-      font-size: 13px;
-      color: var(--text2);
-      font-weight: 600;
-      min-width: 22px;
-      text-align: center;
-    }
+    .next-num { font-size: 12px; color: var(--text2); font-weight: 600; min-width: 20px; text-align: center; }
     .next-info { flex: 1; min-width: 0; }
-    .next-name {
-      font-size: 15px;
-      font-weight: 600;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+    .next-name { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .next-name.no-name { color: var(--text2); font-weight: 400; font-style: italic; }
-    .next-phone {
-      font-size: 13px;
-      color: var(--text2);
-      direction: ltr;
-    }
-    .next-empty {
-      padding: 24px 16px;
-      text-align: center;
-      color: var(--text2);
-      font-size: 14px;
-    }
+    .next-phone { font-size: 12px; color: var(--text2); direction: ltr; }
+    .next-empty { padding: 20px; text-align: center; color: var(--text2); font-size: 14px; }
 
-    /* ── Upload screen ─────────────────────────────── */
-    .upload-body {
-      flex: 1;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 32px 28px; gap: 20px;
-      text-align: center;
+    /* ── History screen ── */
+    .hist-filters {
+      display: flex; gap: 8px; padding: 12px 16px;
+      overflow-x: auto; flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
     }
-    .upload-icon { font-size: 72px; line-height: 1; }
-    .upload-title { font-size: 28px; font-weight: 800; }
-    .upload-sub { font-size: 16px; color: var(--text2); line-height: 1.55; }
+    .hist-filters::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+      border: 1.5px solid var(--border); background: none; color: var(--text2);
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+    .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .hist-list { flex: 1; overflow-y: auto; }
+    .hist-item {
+      display: flex; align-items: center; padding: 12px 16px;
+      border-bottom: 1px solid var(--border); gap: 12px;
+    }
+    .hist-outcome-dot {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .hist-info { flex: 1; min-width: 0; }
+    .hist-name { font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hist-name.no-name { color: var(--text2); font-weight: 400; font-style: italic; }
+    .hist-phone { font-size: 13px; color: var(--text2); direction: ltr; }
+    .hist-meta { text-align: left; flex-shrink: 0; }
+    .hist-outcome-label { font-size: 12px; font-weight: 700; }
+    .hist-time { font-size: 11px; color: var(--text2); margin-top: 2px; }
+    .hist-empty { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: var(--text2); }
+
+    /* outcome colors */
+    .oc-answered   { background: #30d15825; color: var(--green); }
+    .oc-noanswer   { background: #ff453a25; color: var(--red); }
+    .oc-callback   { background: #ff9f0a25; color: var(--orange); }
+    .oc-interested { background: #0a84ff25; color: var(--blue); }
+    .oc-notint     { background: var(--surface2); color: var(--text2); }
+
+    /* ── Upload ── */
+    .upload-body {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 32px 28px; gap: 20px; text-align: center;
+    }
     .drop-zone {
       width: 100%; padding: 36px 20px;
-      border: 2px dashed var(--border);
-      border-radius: var(--r);
-      background: var(--surface);
-      cursor: pointer;
+      border: 2px dashed var(--border); border-radius: var(--r);
+      background: var(--surface); cursor: pointer;
       transition: border-color .2s, background .2s;
     }
     .drop-zone:hover, .drop-zone.drag { border-color: var(--green); background: var(--surface2); }
     .upload-err { color: var(--red); font-size: 14px; display: none; }
 
-    /* ── Settings ──────────────────────────────────── */
-    .settings-body {
-      flex: 1; padding: 24px 22px;
-      display: flex; flex-direction: column; gap: 22px;
-      overflow-y: auto;
-    }
-    .setting-label {
-      font-size: 13px; color: var(--text2); margin-bottom: 8px;
-      font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
-    }
+    /* ── Settings ── */
+    .settings-body { flex: 1; padding: 24px 18px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+    .setting-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
     textarea {
-      width: 100%; padding: 14px 16px;
-      border: 1px solid var(--border); border-radius: 14px;
-      background: var(--surface); color: var(--text);
-      font-size: 17px; font-family: inherit;
-      resize: vertical; min-height: 110px;
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+      border-radius: 14px; background: var(--surface); color: var(--text);
+      font-size: 16px; font-family: inherit; resize: vertical; min-height: 100px;
     }
-    .hint { font-size: 13px; color: var(--text2); margin-top: 6px; }
-    .btn-save {
-      padding: 17px; border: none; border-radius: var(--r);
-      font-size: 17px; font-weight: 700;
-      background: var(--green); color: #fff; cursor: pointer;
-    }
-    .btn-danger {
-      padding: 15px; border: 1px solid var(--red); border-radius: var(--r);
-      font-size: 15px; font-weight: 500;
-      background: none; color: var(--red); cursor: pointer; width: 100%;
-    }
-    .danger-area { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
-
-    /* stats in settings */
-    .stats-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 18px;
-      display: flex;
-      gap: 0;
-    }
-    .stats-card-item {
-      flex: 1;
-      text-align: center;
-    }
-    .stats-card-item:not(:last-child) {
-      border-left: 1px solid var(--border);
-    }
-    .stats-card-value { font-size: 32px; font-weight: 800; }
-    .stats-card-label { font-size: 13px; color: var(--text2); margin-top: 2px; }
+    .hint { font-size: 12px; color: var(--text2); margin-top: 5px; }
+    .btn-save { padding: 16px; border: none; border-radius: var(--r); font-size: 16px; font-weight: 700; background: var(--green); color: #fff; cursor: pointer; }
+    .btn-danger { padding: 14px; border: 1px solid var(--red); border-radius: var(--r); font-size: 14px; font-weight: 500; background: none; color: var(--red); cursor: pointer; width: 100%; }
+    .danger-area { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+    .stats-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; }
+    .stats-card-item { flex: 1; text-align: center; }
+    .stats-card-item:not(:last-child) { border-left: 1px solid var(--border); }
+    .stats-card-value { font-size: 30px; font-weight: 800; }
     .today-val { color: var(--gold); }
     .total-val { color: var(--green); }
+    .stats-card-label { font-size: 12px; color: var(--text2); margin-top: 2px; }
 
-    /* ── Done screen ───────────────────────────────── */
-    .done-body {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 32px 28px; gap: 14px; text-align: center;
-    }
-    .btn-restart {
-      margin-top: 24px; padding: 18px 40px;
-      border: none; border-radius: var(--r);
-      font-size: 18px; font-weight: 700;
-      background: var(--green); color: #fff; cursor: pointer;
-    }
+    /* ── Done ── */
+    .done-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; gap: 12px; text-align: center; }
+    .btn-restart { margin-top: 20px; padding: 18px 40px; border: none; border-radius: var(--r); font-size: 18px; font-weight: 700; background: var(--green); color: #fff; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -383,9 +287,9 @@
 <!-- ══ UPLOAD ══════════════════════════════════════════════════ -->
 <div id="s-upload" class="screen active">
   <div class="upload-body">
-    <div class="upload-icon">📋</div>
-    <div class="upload-title">מחייג JONI</div>
-    <div class="upload-sub">העלה את קובץ האנשי קשר שלך (Excel).<br>הנתונים נשמרים רק במכשיר שלך.</div>
+    <div style="font-size:72px;line-height:1">📋</div>
+    <div style="font-size:28px;font-weight:800">מחייג JONI</div>
+    <div style="font-size:15px;color:var(--text2);line-height:1.55">העלה את קובץ האנשי קשר שלך (Excel).<br>הנתונים נשמרים רק במכשיר שלך.</div>
     <div id="drop-zone" class="drop-zone">
       <div style="font-size:40px;margin-bottom:10px">📂</div>
       <div style="font-size:16px;font-weight:600;margin-bottom:4px">גרור קובץ Excel לכאן</div>
@@ -399,24 +303,23 @@
 <!-- ══ CALLING ═════════════════════════════════════════════════ -->
 <div id="s-calling" class="screen">
   <div class="prog-wrap"><div id="prog" class="prog-bar" style="width:0%"></div></div>
-
   <div class="topbar">
     <span id="count-badge" class="topbar-count">0 / 0</span>
     <span class="topbar-title">מחייג JONI</span>
-    <button class="btn-icon" onclick="App.showSettings()">⚙️</button>
+    <div class="topbar-actions">
+      <button class="btn-icon" onclick="App.showHistory()" title="היסטוריה">📜</button>
+      <button class="btn-icon" onclick="App.showSettings()" title="הגדרות">⚙️</button>
+    </div>
   </div>
 
-  <!-- Stats bar -->
   <div class="stats-bar">
     <div class="stat-item stat-today">
-      <span class="stat-icon">📅</span>
-      <span class="stat-label">היום:</span>
+      <span>📅</span><span class="stat-label">היום:</span>
       <span id="stat-today" class="stat-value">0</span>
     </div>
     <div style="width:1px;background:var(--border)"></div>
     <div class="stat-item stat-total">
-      <span class="stat-icon">📊</span>
-      <span class="stat-label">סה"כ:</span>
+      <span>📊</span><span class="stat-label">סה״כ:</span>
       <span id="stat-total" class="stat-value">0</span>
     </div>
   </div>
@@ -430,8 +333,32 @@
 
   <div class="action-area">
     <button id="btn-call" class="btn-call ready" onclick="App.handleCall()">📞 חייג</button>
+
+    <!-- Outcome buttons -->
+    <div id="outcome-wrap" class="outcome-wrap">
+      <div class="outcome-label">מה היתה התשובה?</div>
+      <div class="outcome-grid">
+        <button class="btn-outcome" data-key="answered"   onclick="App.setOutcome(this)">
+          <span class="o-emoji">✅</span><span class="o-text">ענה</span>
+        </button>
+        <button class="btn-outcome" data-key="noanswer"   onclick="App.setOutcome(this)">
+          <span class="o-emoji">❌</span><span class="o-text">לא ענה</span>
+        </button>
+        <button class="btn-outcome" data-key="callback"   onclick="App.setOutcome(this)">
+          <span class="o-emoji">🔄</span><span class="o-text">שוב</span>
+        </button>
+        <button class="btn-outcome" data-key="interested" onclick="App.setOutcome(this)">
+          <span class="o-emoji">👍</span><span class="o-text">מעוניין</span>
+        </button>
+        <button class="btn-outcome" data-key="notint"     onclick="App.setOutcome(this)">
+          <span class="o-emoji">👎</span><span class="o-text">לא מעוניין</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Post-call -->
     <div id="post-btns" class="post-btns">
-      <button class="btn-wa"  onclick="App.sendWA()"><span>💬</span> שלח WhatsApp</button>
+      <button class="btn-wa"   onclick="App.sendWA()"><span>💬</span> שלח WhatsApp</button>
       <button class="btn-next" onclick="App.next()">הבא בתור &nbsp;➡️</button>
     </div>
   </div>
@@ -441,14 +368,31 @@
     <button class="btn-sec" onclick="App.skip()">דלג ▶</button>
   </div>
 
-  <!-- Next 10 -->
   <div class="next-section">
     <div class="next-header">
       <span class="next-title">🔜 הבאים בתור</span>
-      <span id="next-count-badge" class="next-count-badge"></span>
+      <span id="next-badge" class="next-badge"></span>
     </div>
     <div id="next-list" class="next-list"></div>
   </div>
+</div>
+
+<!-- ══ HISTORY ═════════════════════════════════════════════════ -->
+<div id="s-history" class="screen">
+  <div class="topbar">
+    <button class="btn-icon" onclick="App.showCalling()">✕</button>
+    <span class="topbar-title">היסטוריית שיחות</span>
+    <span style="width:36px"></span>
+  </div>
+  <div class="hist-filters">
+    <button class="filter-btn active" data-filter="all"        onclick="App.filterHistory(this)">הכל</button>
+    <button class="filter-btn"        data-filter="answered"   onclick="App.filterHistory(this)">✅ ענה</button>
+    <button class="filter-btn"        data-filter="noanswer"   onclick="App.filterHistory(this)">❌ לא ענה</button>
+    <button class="filter-btn"        data-filter="callback"   onclick="App.filterHistory(this)">🔄 להתקשר שוב</button>
+    <button class="filter-btn"        data-filter="interested" onclick="App.filterHistory(this)">👍 מעוניין</button>
+    <button class="filter-btn"        data-filter="notint"     onclick="App.filterHistory(this)">👎 לא מעוניין</button>
+  </div>
+  <div id="hist-list" class="hist-list"></div>
 </div>
 
 <!-- ══ SETTINGS ════════════════════════════════════════════════ -->
@@ -459,10 +403,8 @@
     <span style="width:36px"></span>
   </div>
   <div class="settings-body">
-
-    <!-- Stats card -->
     <div>
-      <div class="setting-label">סטטיסטיקות שיחות</div>
+      <div class="setting-label">סטטיסטיקות</div>
       <div class="stats-card">
         <div class="stats-card-item">
           <div id="set-today" class="stats-card-value today-val">0</div>
@@ -470,19 +412,19 @@
         </div>
         <div class="stats-card-item">
           <div id="set-total" class="stats-card-value total-val">0</div>
-          <div class="stats-card-label">📊 סה"כ</div>
+          <div class="stats-card-label">📊 סה״כ</div>
         </div>
       </div>
     </div>
-
     <div>
-      <div class="setting-label">תבנית הודעת WhatsApp</div>
+      <div class="setting-label">תבנית WhatsApp</div>
       <textarea id="wa-tmpl" rows="4"></textarea>
       <div class="hint">השתמש ב-<code>[שם]</code> לשם איש הקשר</div>
     </div>
     <button class="btn-save" onclick="App.saveSettings()">שמור</button>
     <div class="danger-area">
       <button class="btn-danger" onclick="App.resetStats()">אפס סטטיסטיקות</button>
+      <button class="btn-danger" onclick="App.clearHistory()">מחק היסטוריה</button>
       <button class="btn-danger" onclick="App.resetQueue()">אפס מיקום בתור</button>
       <button class="btn-danger" onclick="App.clearAll()">מחק את כל הנתונים</button>
     </div>
@@ -494,10 +436,10 @@
   <div class="done-body">
     <div style="font-size:80px">🎉</div>
     <div style="font-size:30px;font-weight:800">סיימת!</div>
-    <div style="font-size:16px;color:var(--text2)">התקשרת לכל אנשי הקשר</div>
-    <div style="font-size:15px;margin-top:8px">
-      היום: <strong id="done-today" style="color:var(--gold)">0</strong> שיחות &nbsp;|&nbsp;
-      סה"כ: <strong id="done-total" style="color:var(--green)">0</strong> שיחות
+    <div style="font-size:15px;color:var(--text2)">התקשרת לכל אנשי הקשר</div>
+    <div style="font-size:14px;margin-top:6px">
+      היום: <strong id="done-today" style="color:var(--gold)">0</strong> &nbsp;|&nbsp;
+      סה״כ: <strong id="done-total" style="color:var(--green)">0</strong>
     </div>
     <button class="btn-restart" onclick="App.resetQueue()">התחל מחדש</button>
   </div>
@@ -515,20 +457,29 @@ const App = (() => {
     todayCount: 'joni_today_count',
     totalCount: 'joni_total_count',
     lastDate:   'joni_last_date',
+    history:    'joni_history',
   };
   const DEFAULT_TMPL = 'שלום [שם], זה JONI 😊';
-  const NEXT_COUNT = 10;
+  const OUTCOMES = {
+    answered:   { emoji: '✅', label: 'ענה',               cls: 'oc-answered',   selCls: 'sel-answered' },
+    noanswer:   { emoji: '❌', label: 'לא ענה',             cls: 'oc-noanswer',   selCls: 'sel-noanswer' },
+    callback:   { emoji: '🔄', label: 'להתקשר שוב',        cls: 'oc-callback',   selCls: 'sel-callback' },
+    interested: { emoji: '👍', label: 'מעוניין',            cls: 'oc-interested', selCls: 'sel-interested' },
+    notint:     { emoji: '👎', label: 'לא מעוניין',         cls: 'oc-notint',     selCls: 'sel-notint' },
+  };
 
-  let contacts  = [];
-  let position  = 0;
-  let completed = new Set();
-  let skipped   = new Set();
-  let template  = DEFAULT_TMPL;
-  let called    = false;
+  let contacts   = [];
+  let position   = 0;
+  let completed  = new Set();
+  let skipped    = new Set();
+  let template   = DEFAULT_TMPL;
   let todayCount = 0;
   let totalCount = 0;
+  let history    = [];  // [{phone,name,outcome,ts}]
+  let curOutcome = null;
+  let histFilter = 'all';
 
-  // ── Persistence ───────────────────────────────────────────
+  // ── Storage ───────────────────────────────────────────────
   function load() {
     try {
       const c = localStorage.getItem(K.contacts);
@@ -539,14 +490,15 @@ const App = (() => {
       const s = localStorage.getItem(K.skipped);
       if (s) skipped = new Set(JSON.parse(s));
       template = localStorage.getItem(K.template) || DEFAULT_TMPL;
+      const h = localStorage.getItem(K.history);
+      if (h) history = JSON.parse(h);
       loadStats();
     } catch(_) {}
   }
 
   function loadStats() {
     const today = new Date().toDateString();
-    const lastDate = localStorage.getItem(K.lastDate) || '';
-    if (lastDate !== today) {
+    if (localStorage.getItem(K.lastDate) !== today) {
       todayCount = 0;
       localStorage.setItem(K.lastDate, today);
       localStorage.setItem(K.todayCount, '0');
@@ -562,29 +514,29 @@ const App = (() => {
     localStorage.setItem(K.completed, JSON.stringify([...completed]));
     localStorage.setItem(K.skipped,   JSON.stringify([...skipped]));
     localStorage.setItem(K.template,  template);
+    localStorage.setItem(K.history,   JSON.stringify(history));
   }
 
   function trackCall() {
-    const today = new Date().toDateString();
-    const lastDate = localStorage.getItem(K.lastDate) || '';
-    if (lastDate !== today) {
+    if (localStorage.getItem(K.lastDate) !== new Date().toDateString()) {
       todayCount = 0;
-      localStorage.setItem(K.lastDate, today);
+      localStorage.setItem(K.lastDate, new Date().toDateString());
     }
-    todayCount++;
-    totalCount++;
+    todayCount++; totalCount++;
     localStorage.setItem(K.todayCount, String(todayCount));
     localStorage.setItem(K.totalCount, String(totalCount));
     updateStatsUI();
   }
 
   function updateStatsUI() {
-    document.getElementById('stat-today').textContent = todayCount;
-    document.getElementById('stat-total').textContent = totalCount;
-    document.getElementById('set-today').textContent  = todayCount;
-    document.getElementById('set-total').textContent  = totalCount;
-    document.getElementById('done-today').textContent = todayCount;
-    document.getElementById('done-total').textContent = totalCount;
+    ['stat-today','set-today','done-today'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = todayCount;
+    });
+    ['stat-total','set-total','done-total'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = totalCount;
+    });
   }
 
   // ── Screens ───────────────────────────────────────────────
@@ -592,79 +544,50 @@ const App = (() => {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('s-' + id).classList.add('active');
   }
+  function showCalling()  { show('calling'); render(); }
+  function showSettings() { document.getElementById('wa-tmpl').value = template; updateStatsUI(); show('settings'); }
+  function showHistory()  { renderHistory(); show('history'); }
 
-  function showCalling() { show('calling'); render(); }
-  function showSettings() {
-    document.getElementById('wa-tmpl').value = template;
-    updateStatsUI();
-    show('settings');
-  }
-
-  // ── Render ────────────────────────────────────────────────
+  // ── Render contact ────────────────────────────────────────
   function render() {
-    called = false;
+    curOutcome = null;
     setCallState(false);
 
-    while (position < contacts.length && (completed.has(position) || skipped.has(position))) {
-      position++;
-    }
+    while (position < contacts.length && (completed.has(position) || skipped.has(position))) position++;
 
-    if (position >= contacts.length) {
-      updateStatsUI();
-      show('done');
-      return;
-    }
+    if (position >= contacts.length) { updateStatsUI(); show('done'); return; }
 
-    const c   = contacts[position];
-    const tot = contacts.length;
-    const done = completed.size;
-
+    const c = contacts[position];
     document.getElementById('c-name').textContent  = c.name || formatPhone(c.phone);
     document.getElementById('c-phone').textContent = formatPhone(c.phone);
     document.getElementById('c-group').textContent = c.group || '';
     document.getElementById('av').textContent      = avatar(c.name);
-    document.getElementById('count-badge').textContent = `${done} / ${tot}`;
-    document.getElementById('prog').style.width = (tot > 0 ? done / tot * 100 : 0) + '%';
-
+    document.getElementById('count-badge').textContent = `${completed.size} / ${contacts.length}`;
+    document.getElementById('prog').style.width = (completed.size / contacts.length * 100) + '%';
     updateStatsUI();
     renderNextTen();
   }
 
   function renderNextTen() {
     const list = [];
-    for (let i = position + 1; i < contacts.length && list.length < NEXT_COUNT; i++) {
-      if (!completed.has(i) && !skipped.has(i)) {
-        list.push({ idx: i, c: contacts[i] });
-      }
-    }
-
-    const container = document.getElementById('next-list');
-    const badge = document.getElementById('next-count-badge');
-
-    // Count remaining (excluding current)
     let remaining = 0;
     for (let i = position + 1; i < contacts.length; i++) {
-      if (!completed.has(i) && !skipped.has(i)) remaining++;
+      if (!completed.has(i) && !skipped.has(i)) {
+        if (list.length < 10) list.push(contacts[i]);
+        remaining++;
+      }
     }
-    badge.textContent = remaining > 0 ? `${remaining} נותרו` : 'זהו!';
-
-    if (list.length === 0) {
-      container.innerHTML = '<div class="next-empty">אין עוד מספרים בתור</div>';
-      return;
-    }
-
-    container.innerHTML = list.map((item, i) => {
-      const hasName = item.c.name && item.c.name.trim();
-      return `
-        <div class="next-item">
-          <div class="next-num">${i + 1}</div>
-          <div class="next-info">
-            <div class="next-name ${hasName ? '' : 'no-name'}">${hasName ? item.c.name : 'ללא שם'}</div>
-            <div class="next-phone">${formatPhone(item.c.phone)}</div>
-          </div>
+    document.getElementById('next-badge').textContent = remaining > 0 ? `${remaining} נותרו` : 'זהו!';
+    const container = document.getElementById('next-list');
+    if (!list.length) { container.innerHTML = '<div class="next-empty">אין עוד מספרים בתור</div>'; return; }
+    container.innerHTML = list.map((c, i) => `
+      <div class="next-item">
+        <div class="next-num">${i + 1}</div>
+        <div class="next-info">
+          <div class="next-name ${c.name ? '' : 'no-name'}">${c.name || 'ללא שם'}</div>
+          <div class="next-phone">${formatPhone(c.phone)}</div>
         </div>
-      `;
-    }).join('');
+      </div>`).join('');
   }
 
   function avatar(name) {
@@ -677,28 +600,71 @@ const App = (() => {
   function handleCall() {
     const c = contacts[position];
     if (!c) return;
-    const phone = '+' + c.phone.replace(/\D/g, '');
-    window.location.href = 'tel:' + phone;
+    window.location.href = 'tel:+' + c.phone.replace(/\D/g, '');
     trackCall();
-    called = true;
     setCallState(true);
   }
 
-  function setCallState(isCalled) {
-    const btn  = document.getElementById('btn-call');
-    const post = document.getElementById('post-btns');
-    if (isCalled) {
-      btn.className = 'btn-call called';
+  function setCallState(active) {
+    const btn     = document.getElementById('btn-call');
+    const outWrap = document.getElementById('outcome-wrap');
+    const post    = document.getElementById('post-btns');
+    if (active) {
+      btn.className   = 'btn-call called';
       btn.textContent = '✓ חייגת';
+      outWrap.classList.add('show');
       post.classList.add('show');
+      // reset outcome buttons
+      document.querySelectorAll('.btn-outcome').forEach(b => {
+        b.className = 'btn-outcome';
+      });
     } else {
-      btn.className = 'btn-call ready';
+      btn.className   = 'btn-call ready';
       btn.textContent = '📞 חייג';
+      outWrap.classList.remove('show');
       post.classList.remove('show');
     }
   }
 
+  function setOutcome(btn) {
+    // deselect all
+    document.querySelectorAll('.btn-outcome').forEach(b => b.className = 'btn-outcome');
+    const key = btn.dataset.key;
+    btn.className = 'btn-outcome ' + OUTCOMES[key].selCls;
+    curOutcome = key;
+    // save to history immediately
+    const c = contacts[position];
+    addHistory(c, key);
+  }
+
+  function addHistory(c, outcomeKey) {
+    // update existing entry for this call or add new
+    const existing = history.find(h => h.phone === c.phone && !h.finalized);
+    if (existing) {
+      existing.outcome = outcomeKey;
+    } else {
+      history.push({
+        phone: c.phone,
+        name:  c.name || '',
+        outcome: outcomeKey,
+        ts: Date.now(),
+        finalized: false,
+      });
+    }
+    save();
+  }
+
   function next() {
+    // finalize history entry
+    const c = contacts[position];
+    const entry = history.findLast ? history.findLast(h => h.phone === c.phone) : [...history].reverse().find(h => h.phone === c.phone);
+    if (entry) {
+      entry.finalized = true;
+      if (!entry.outcome) entry.outcome = null;
+    } else if (!curOutcome) {
+      // no outcome selected, log as "no status"
+      history.push({ phone: c.phone, name: c.name || '', outcome: null, ts: Date.now(), finalized: true });
+    }
     completed.add(position);
     position++;
     save();
@@ -725,8 +691,44 @@ const App = (() => {
     const c = contacts[position];
     if (!c) return;
     const msg   = template.replace('[שם]', c.name || '').replace('[name]', c.name || '');
-    const phone = c.phone.replace(/\D/g, '');
-    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+    window.open('https://wa.me/' + c.phone.replace(/\D/g, '') + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  // ── History ───────────────────────────────────────────────
+  function filterHistory(btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    histFilter = btn.dataset.filter;
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const list = [...history].reverse().filter(h => histFilter === 'all' || h.outcome === histFilter);
+    const container = document.getElementById('hist-list');
+
+    if (!list.length) {
+      container.innerHTML = '<div class="hist-empty"><div style="font-size:48px">📭</div><div>אין שיחות להציג</div></div>';
+      return;
+    }
+
+    container.innerHTML = list.map(h => {
+      const o   = h.outcome ? OUTCOMES[h.outcome] : { emoji: '•', label: 'ללא סטטוס', cls: 'oc-notint' };
+      const dt  = new Date(h.ts);
+      const date = dt.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit' });
+      const time = dt.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+      return `
+        <div class="hist-item">
+          <div class="hist-outcome-dot ${o.cls}">${o.emoji}</div>
+          <div class="hist-info">
+            <div class="hist-name ${h.name ? '' : 'no-name'}">${h.name || 'ללא שם'}</div>
+            <div class="hist-phone">${formatPhone(h.phone)}</div>
+          </div>
+          <div class="hist-meta">
+            <div class="hist-outcome-label" style="color:inherit">${o.label}</div>
+            <div class="hist-time">${date} ${time}</div>
+          </div>
+        </div>`;
+    }).join('');
   }
 
   // ── Settings actions ──────────────────────────────────────
@@ -735,7 +737,6 @@ const App = (() => {
     save();
     showCalling();
   }
-
   function resetStats() {
     if (!confirm('לאפס את כל הסטטיסטיקות?')) return;
     todayCount = 0; totalCount = 0;
@@ -744,24 +745,24 @@ const App = (() => {
     localStorage.setItem(K.lastDate, new Date().toDateString());
     updateStatsUI();
   }
-
+  function clearHistory() {
+    if (!confirm('למחוק את כל ההיסטוריה?')) return;
+    history = []; save();
+  }
   function resetQueue() {
     if (!confirm('לאפס את המיקום בתור?')) return;
     position = 0; completed = new Set(); skipped = new Set();
-    save();
-    showCalling();
+    save(); showCalling();
   }
-
   function clearAll() {
     if (!confirm('למחוק את כל הנתונים?')) return;
     localStorage.clear();
-    contacts = []; position = 0;
-    completed = new Set(); skipped = new Set();
-    todayCount = 0; totalCount = 0;
+    contacts = []; position = 0; completed = new Set(); skipped = new Set();
+    history = []; todayCount = 0; totalCount = 0;
     show('upload');
   }
 
-  // ── Phone helpers ─────────────────────────────────────────
+  // ── Helpers ───────────────────────────────────────────────
   function formatPhone(raw) {
     const d = raw.replace(/\D/g, '');
     if (d.startsWith('972') && d.length === 12) {
@@ -792,15 +793,12 @@ const App = (() => {
         const ws   = wb.Sheets[wb.SheetNames[0]];
         const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
         if (rows.length < 2) return showErr('הקובץ ריק');
-
-        const hdrs = rows[0].map(h => String(h).trim());
+        const hdrs        = rows[0].map(h => String(h).trim());
         const phoneIdx    = findCol(hdrs, ['מספר נייד','טלפון','נייד','phone','mobile']);
         const fullNameIdx = findCol(hdrs, ['שם מלא','full name']);
         const nameIdx     = findCol(hdrs, ['שם','name']);
         const groupIdx    = findCol(hdrs, ['שם קבוצה','קבוצה','group']);
-
         if (phoneIdx === -1) return showErr('לא נמצאה עמודת טלפון');
-
         const parsed = [];
         for (let i = 1; i < rows.length; i++) {
           const r     = rows[i];
@@ -808,30 +806,19 @@ const App = (() => {
           if (phone.length < 9) continue;
           const full  = fullNameIdx !== -1 ? String(r[fullNameIdx] || '').trim() : '';
           const short = nameIdx     !== -1 ? String(r[nameIdx]     || '').trim() : '';
-          const name  = full || short;
-          const group = groupIdx !== -1 ? String(r[groupIdx] || '').trim() : '';
-          parsed.push({ phone, name, group });
+          parsed.push({ phone, name: full || short, group: groupIdx !== -1 ? String(r[groupIdx] || '').trim() : '' });
         }
-
-        if (parsed.length === 0) return showErr('לא נמצאו מספרים תקינים');
-
-        contacts  = parsed;
-        position  = 0;
-        completed = new Set();
-        skipped   = new Set();
-        save();
-        showCalling();
-      } catch(err) {
-        showErr('שגיאה: ' + err.message);
-      }
+        if (!parsed.length) return showErr('לא נמצאו מספרים תקינים');
+        contacts = parsed; position = 0; completed = new Set(); skipped = new Set();
+        save(); showCalling();
+      } catch(err) { showErr('שגיאה: ' + err.message); }
     };
     reader.readAsArrayBuffer(file);
   }
 
   function showErr(msg) {
     const el = document.getElementById('upload-err');
-    el.textContent = msg;
-    el.style.display = 'block';
+    el.textContent = msg; el.style.display = 'block';
   }
 
   function setupUpload() {
@@ -840,21 +827,17 @@ const App = (() => {
     zone.addEventListener('click',     () => input.click());
     zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('drag'); });
     zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
-    zone.addEventListener('drop', e => {
-      e.preventDefault(); zone.classList.remove('drag');
-      if (e.dataTransfer.files[0]) parseExcel(e.dataTransfer.files[0]);
-    });
+    zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); if (e.dataTransfer.files[0]) parseExcel(e.dataTransfer.files[0]); });
     input.addEventListener('change', () => { if (input.files[0]) parseExcel(input.files[0]); });
   }
 
   function init() {
-    load();
-    setupUpload();
+    load(); setupUpload();
     if (contacts.length > 0) showCalling();
     else show('upload');
   }
 
-  return { init, handleCall, next, skip, prev, sendWA, showCalling, showSettings, saveSettings, resetQueue, resetStats, clearAll };
+  return { init, handleCall, setOutcome, next, skip, prev, sendWA, showCalling, showSettings, showHistory, filterHistory, saveSettings, resetStats, clearHistory, resetQueue, clearAll };
 })();
 
 App.init();
