@@ -837,9 +837,9 @@ const App = (() => {
                    .replace(/\s+/g,' ').trim()
         );
         let phoneIdx    = findCol(hdrs, ['מספר נייד','מספר טלפון','טלפון נייד','נייד','טלפון','phone','mobile','tel']);
-        const fullNameIdx = findCol(hdrs, ['שם מלא','full name']);
-        const nameIdx     = findCol(hdrs, ['שם','name']);
-        const groupIdx    = findCol(hdrs, ['שם קבוצה','קבוצה','group']);
+        const fullNameIdx = findCol(hdrs, ['שם מלא','full name','fullname']);
+        const nameIdx     = findCol(hdrs, ['שם','name','first_name','firstname']);
+        const groupIdx    = findCol(hdrs, ['שם קבוצה','קבוצה','label_name','label','group','description']);
         // Fallback: auto-detect phone column by content
         if (phoneIdx === -1) {
           const sample = rows.slice(1, Math.min(rows.length, 20));
@@ -907,8 +907,9 @@ const App = (() => {
 
   // ── Helpers ───────────────────────────────────────────────
   function findCol(headers, options) {
-    for (const opt of options) { const i = headers.findIndex(h => h === opt); if (i !== -1) return i; }
-    for (const opt of options) { const i = headers.findIndex(h => h.includes(opt)); if (i !== -1) return i; }
+    const lc = headers.map(h => h.toLowerCase());
+    for (const opt of options) { const i = lc.findIndex(h => h === opt.toLowerCase()); if (i !== -1) return i; }
+    for (const opt of options) { const i = lc.findIndex(h => h.includes(opt.toLowerCase())); if (i !== -1) return i; }
     return -1;
   }
   function formatPhone(raw) {
